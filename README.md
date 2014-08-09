@@ -1,4 +1,11 @@
 HeidiKit
 ========
 
-iOS Swift UI Kit for developing app.
+iOS Swift UI Kit.
+
+
+Plan
+
+Wysiwyg text editor
+Multiple image picker
+
