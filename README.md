@@ -5,11 +5,11 @@ iOS UI Kit for DC Life HD Project.
 Language : Swift
 
 
-== HDImagePickerController ==
+# HDImagePickerController
 * Multiple image picker using PhotoKit
 
 
-== Planing ==
+# Planing
 * Image viewer
 * Image cache
 * Html viewer supporting lazy image loading
