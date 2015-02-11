@@ -7,17 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B725D3551A8BC26C004F4AFC /* HDImagePickerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B725D3541A8BC26C004F4AFC /* HDImagePickerControllerDelegate.swift */; };
+		B725D3571A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B725D3561A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift */; };
+		B7269B5B1A779BFC003312C7 /* HDImagePickerController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7269B5A1A779BFC003312C7 /* HDImagePickerController.storyboard */; };
+		B7269B5F1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7269B5E1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift */; };
+		B74877001A8658030007E84C /* HDIPCAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74876FF1A8658030007E84C /* HDIPCAssetsViewController.swift */; };
+		B74877021A8667DC0007E84C /* HDIPCAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74877011A8667DC0007E84C /* HDIPCAssetCell.swift */; };
+		B74877041A87B8340007E84C /* HDIPCAssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74877031A87B8340007E84C /* HDIPCAssetCollectionCell.swift */; };
 		B7BD986F1995B28800C7A0CC /* HeidiKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B7BD986E1995B28800C7A0CC /* HeidiKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B7BD98791995B28800C7A0CC /* HeidiKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BD98781995B28800C7A0CC /* HeidiKitTests.swift */; };
+		B7BFD9101A79356A001DF4D3 /* HDImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BFD90F1A79356A001DF4D3 /* HDImagePickerController.swift */; };
+		B7F3391D1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F3391C1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift */; };
+		B7F339221A8A436F00FDEC8B /* HDIPCSelectedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F339211A8A436F00FDEC8B /* HDIPCSelectedAsset.swift */; };
+		B7F97D0E1A825FFE001E97D3 /* HDAssetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F97D0D1A825FFE001E97D3 /* HDAssetCollection.swift */; };
+		B7F97D141A83A6C0001E97D3 /* HeidiKit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7F97D131A83A6C0001E97D3 /* HeidiKit.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B725D3541A8BC26C004F4AFC /* HDImagePickerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDImagePickerControllerDelegate.swift; sourceTree = "<group>"; };
+		B725D3561A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCSelectedAssetCell.swift; sourceTree = "<group>"; };
+		B7269B561A76B3ED003312C7 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		B7269B5A1A779BFC003312C7 /* HDImagePickerController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HDImagePickerController.storyboard; sourceTree = "<group>"; };
+		B7269B5E1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCollectionViewController.swift; sourceTree = "<group>"; };
+		B74876FF1A8658030007E84C /* HDIPCAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetsViewController.swift; sourceTree = "<group>"; };
+		B74877011A8667DC0007E84C /* HDIPCAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCell.swift; sourceTree = "<group>"; };
+		B74877031A87B8340007E84C /* HDIPCAssetCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCollectionCell.swift; sourceTree = "<group>"; };
+		B760C9871995B8F000B97517 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B7BD98691995B28800C7A0CC /* HeidiKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HeidiKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7BD986D1995B28800C7A0CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7BD986E1995B28800C7A0CC /* HeidiKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeidiKit.h; sourceTree = "<group>"; };
 		B7BD98741995B28800C7A0CC /* HeidiKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeidiKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7BD98771995B28800C7A0CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7BD98781995B28800C7A0CC /* HeidiKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeidiKitTests.swift; sourceTree = "<group>"; };
+		B7BFD90F1A79356A001DF4D3 /* HDImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDImagePickerController.swift; sourceTree = "<group>"; };
+		B7F3391C1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCSelectedListViewController.swift; sourceTree = "<group>"; };
+		B7F339211A8A436F00FDEC8B /* HDIPCSelectedAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCSelectedAsset.swift; sourceTree = "<group>"; };
+		B7F97D0D1A825FFE001E97D3 /* HDAssetCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDAssetCollection.swift; sourceTree = "<group>"; };
+		B7F97D131A83A6C0001E97D3 /* HeidiKit.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = HeidiKit.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,9 +64,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B7269B4F1A7697D8003312C7 /* HDImagePickerController */ = {
+			isa = PBXGroup;
+			children = (
+				B7F97D0D1A825FFE001E97D3 /* HDAssetCollection.swift */,
+				B7269B5A1A779BFC003312C7 /* HDImagePickerController.storyboard */,
+				B7BFD90F1A79356A001DF4D3 /* HDImagePickerController.swift */,
+				B725D3541A8BC26C004F4AFC /* HDImagePickerControllerDelegate.swift */,
+				B74877011A8667DC0007E84C /* HDIPCAssetCell.swift */,
+				B74877031A87B8340007E84C /* HDIPCAssetCollectionCell.swift */,
+				B7269B5E1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift */,
+				B74876FF1A8658030007E84C /* HDIPCAssetsViewController.swift */,
+				B7F339211A8A436F00FDEC8B /* HDIPCSelectedAsset.swift */,
+				B7F3391C1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift */,
+				B725D3561A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift */,
+			);
+			name = HDImagePickerController;
+			sourceTree = "<group>";
+		};
 		B7BD985F1995B28800C7A0CC = {
 			isa = PBXGroup;
 			children = (
+				B7269B561A76B3ED003312C7 /* Photos.framework */,
+				B760C9871995B8F000B97517 /* README.md */,
 				B7BD986B1995B28800C7A0CC /* HeidiKit */,
 				B7BD98751995B28800C7A0CC /* HeidiKitTests */,
 				B7BD986A1995B28800C7A0CC /* Products */,
@@ -59,6 +105,9 @@
 		B7BD986B1995B28800C7A0CC /* HeidiKit */ = {
 			isa = PBXGroup;
 			children = (
+				B7F3391E1A88F68200FDEC8B /* HDImageViewController */,
+				B7F97D131A83A6C0001E97D3 /* HeidiKit.xcassets */,
+				B7269B4F1A7697D8003312C7 /* HDImagePickerController */,
 				B7BD986E1995B28800C7A0CC /* HeidiKit.h */,
 				B7BD986C1995B28800C7A0CC /* Supporting Files */,
 			);
@@ -88,6 +137,13 @@
 				B7BD98771995B28800C7A0CC /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B7F3391E1A88F68200FDEC8B /* HDImageViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = HDImageViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +236,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7F97D141A83A6C0001E97D3 /* HeidiKit.xcassets in Resources */,
+				B7269B5B1A779BFC003312C7 /* HDImagePickerController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +255,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7F3391D1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift in Sources */,
+				B7269B5F1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift in Sources */,
+				B74877021A8667DC0007E84C /* HDIPCAssetCell.swift in Sources */,
+				B74877001A8658030007E84C /* HDIPCAssetsViewController.swift in Sources */,
+				B7F339221A8A436F00FDEC8B /* HDIPCSelectedAsset.swift in Sources */,
+				B725D3551A8BC26C004F4AFC /* HDImagePickerControllerDelegate.swift in Sources */,
+				B725D3571A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift in Sources */,
+				B74877041A87B8340007E84C /* HDIPCAssetCollectionCell.swift in Sources */,
+				B7F97D0E1A825FFE001E97D3 /* HDAssetCollection.swift in Sources */,
+				B7BFD9101A79356A001DF4D3 /* HDImagePickerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,9 +374,12 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = HeidiKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -322,9 +393,12 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = HeidiKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -377,6 +451,7 @@
 				B7BD987E1995B28800C7A0CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B7BD987F1995B28800C7A0CC /* Build configuration list for PBXNativeTarget "HeidiKitTests" */ = {
 			isa = XCConfigurationList;
@@ -385,6 +460,7 @@
 				B7BD98811995B28800C7A0CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

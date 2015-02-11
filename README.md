@@ -1,11 +1,17 @@
 HeidiKit
 ========
+iOS UI Kit for DC Life HD Project.
 
-iOS Swift UI Kit.
+Language : Swift
 
 
-Plan
+== HDImagePickerController ==
+* Multiple image picker using PhotoKit
 
-Wysiwyg text editor
-Multiple image picker
+
+== Planing ==
+* Image viewer
+* Image cache
+* Html viewer supporting lazy image loading
+* Wysiwyg text editor
 
