@@ -26,6 +26,8 @@ class HDAssetCollection: NSObject {
             
             let fetchOptions = PHFetchOptions()
             fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.Image.rawValue)
+            fetchOptions.wantsIncrementalChangeDetails = true
+            
             //fetchOptions.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: true) ]
             _assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(self.assetCollection, options: fetchOptions)
             

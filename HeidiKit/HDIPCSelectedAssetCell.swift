@@ -14,4 +14,5 @@ class HDIPCSelectedAssetCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var resolutionLabel: UILabel!
     @IBOutlet weak var fileSizeLabel: UILabel!
+    @IBOutlet weak var downloadIndicatorView: UIActivityIndicatorView!
 }

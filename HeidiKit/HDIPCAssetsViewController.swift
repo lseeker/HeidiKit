@@ -175,7 +175,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         cell.imageView.alpha = 0.7
         
         let imagePicker = navigationController as HDImagePickerController
-        imagePicker.selectedAssets.addObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row))
+        imagePicker.selectedAssets.addObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as PHAsset)
         imagePicker.updateToolbar()
     }
     
@@ -185,7 +185,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         cell.imageView.alpha = 1
         
         let imagePicker = navigationController as HDImagePickerController
-        imagePicker.selectedAssets.removeObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row))
+        imagePicker.selectedAssets.removeObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as PHAsset)
         imagePicker.updateToolbar()
     }
     

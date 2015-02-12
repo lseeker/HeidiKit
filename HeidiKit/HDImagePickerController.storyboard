@@ -118,7 +118,7 @@
         <scene sceneID="aPR-n4-n1D">
             <objects>
                 <tableViewController id="afK-Pt-2HL" customClass="HDIPCSelectedListViewController" customModule="HeidiKit" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="YmR-VW-2fu">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="YmR-VW-2fu">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -159,8 +159,12 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="JJi-In-UMj">
+                                            <rect key="frame" x="572" y="47" width="20" height="20"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="JJi-In-UMj" firstAttribute="trailing" secondItem="dj4-i7-Gef" secondAttribute="trailingMargin" id="3Gj-xY-0Pn"/>
                                         <constraint firstAttribute="centerY" secondItem="1u9-8n-cZ4" secondAttribute="centerY" constant="16" id="DtT-rj-qUh"/>
                                         <constraint firstItem="Yzw-ix-jV7" firstAttribute="leading" secondItem="dj4-i7-Gef" secondAttribute="leadingMargin" constant="80" id="FBL-Wk-AOi"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Yzw-ix-jV7" secondAttribute="bottom" id="Flf-xo-Do6"/>
@@ -172,6 +176,7 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="1u9-8n-cZ4" secondAttribute="trailing" id="m7Z-5a-Rwo"/>
                                         <constraint firstItem="a5N-6f-8gJ" firstAttribute="trailing" secondItem="dj4-i7-Gef" secondAttribute="trailingMargin" id="p77-70-5de"/>
                                         <constraint firstItem="gBX-LD-kDg" firstAttribute="leading" secondItem="dj4-i7-Gef" secondAttribute="leadingMargin" id="pmr-W5-TVT"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="JJi-In-UMj" secondAttribute="bottom" id="sHI-vJ-gzu"/>
                                         <constraint firstItem="SLZ-Pq-hrW" firstAttribute="leading" secondItem="dj4-i7-Gef" secondAttribute="leadingMargin" constant="80" id="tWT-sW-9uA"/>
                                         <constraint firstItem="a5N-6f-8gJ" firstAttribute="leading" secondItem="dj4-i7-Gef" secondAttribute="leadingMargin" constant="80" id="tba-ct-g6g"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="SLZ-Pq-hrW" secondAttribute="trailing" id="vZw-9j-uza"/>
@@ -179,6 +184,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="dateLabel" destination="SLZ-Pq-hrW" id="Jwc-QY-YT0"/>
+                                    <outlet property="downloadIndicatorView" destination="JJi-In-UMj" id="jgE-S0-C4t"/>
                                     <outlet property="fileSizeLabel" destination="a5N-6f-8gJ" id="mkL-ZF-w5l"/>
                                     <outlet property="nameLabel" destination="1u9-8n-cZ4" id="m6F-On-E08"/>
                                     <outlet property="resolutionLabel" destination="Yzw-ix-jV7" id="7Pc-vc-Dsh"/>
@@ -191,10 +197,10 @@
                             <outlet property="delegate" destination="afK-Pt-2HL" id="yZf-bo-NF8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Selected Images" id="dGW-i6-qDO">
-                        <barButtonItem key="rightBarButtonItem" title="Close" id="6AJ-lk-Evd">
+                    <navigationItem key="navigationItem" title="Selected Images" id="MPc-mf-N1Z">
+                        <barButtonItem key="rightBarButtonItem" title="Close" id="ua2-he-sTl">
                             <connections>
-                                <action selector="dismiss" destination="afK-Pt-2HL" id="YYY-1f-kTH"/>
+                                <action selector="dismiss" destination="afK-Pt-2HL" id="oRg-G1-PYD"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

@@ -16,7 +16,63 @@ public class HDImagePickerController: UINavigationController {
     @IBOutlet public var imagePickerDelegate : HDImagePickerControllerDelegate?
     @IBInspectable public var maxImageCount = 5
     
-    var selectedAssets = NSMutableOrderedSet()
+    class HDIPCSelectedAssets : NSObject, PHPhotoLibraryChangeObserver {
+        private let selectedAssets = NSMutableOrderedSet()
+        
+        var count : Int {
+            get { return selectedAssets.count }
+        }
+        
+        var photoAssets : NSMutableOrderedSet {
+            get { return selectedAssets }
+        }
+        
+        override init() {
+            super.init()
+            
+            PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+        }
+        
+        deinit {
+            PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+        }
+        
+        func addObject(asset: PHAsset) {
+            selectedAssets.addObject(asset)
+        }
+        
+        func removeObject(asset: PHAsset) {
+            selectedAssets.removeObject(asset)
+        }
+        
+        func containsObject(asset: PHAsset) -> Bool {
+            return selectedAssets.containsObject(asset)
+        }
+        
+        func array() -> [PHAsset] {
+            var array = [PHAsset]()
+            array.reserveCapacity(selectedAssets.count)
+            selectedAssets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
+                array.append(obj as PHAsset)
+            }
+            return array
+        }
+        
+        func photoLibraryDidChange(changeInstance: PHChange!) {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.selectedAssets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
+                    if let details = changeInstance.changeDetailsForObject(obj as PHAsset) {
+                        if details.assetContentChanged {
+                            let asset = details.objectAfterChanges as PHAsset
+                            self.selectedAssets.setObject(asset, atIndex: index)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let selectedAssets = HDIPCSelectedAssets()
+    
     
     class public func newImagePickerController() -> HDImagePickerController {
         return UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateInitialViewController() as HDImagePickerController
@@ -36,7 +92,7 @@ public class HDImagePickerController: UINavigationController {
     
     @IBAction func doDone() {
         if let delegate = imagePickerDelegate {
-            delegate.imagePickerController(self, didFinishWithPhotoAssets: [PHAsset](selectedAssets.array as [PHAsset]))
+            delegate.imagePickerController(self, didFinishWithPhotoAssets: selectedAssets.array())
         } else {
             dismissViewControllerAnimated(true, completion: nil)
         }
@@ -67,13 +123,12 @@ public class HDImagePickerController: UINavigationController {
         toolbarText.title = "\(selectedAssets.count) / \(maxImageCount)"
         toolbarSelectedListButton.enabled = selectedAssets.count > 0
     }
-
+    
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let navigationController = segue.destinationViewController as? UINavigationController {
             if let selectedListViewController = navigationController.topViewController as? HDIPCSelectedListViewController {
-                selectedListViewController.assets = selectedAssets
+                selectedListViewController.assets = selectedAssets.photoAssets
             }
         }
     }
-
 }

@@ -174,8 +174,11 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         } else {
             cell.keyImageView.image = UIImage(named: "EmptyAssetCollection", inBundle: NSBundle(forClass: HDIPCAssetCollectionViewController.self), compatibleWithTraitCollection: nil)
             assetCollection.fetchKeyImage({ (keyImage) -> Void in
-                cell.keyImageView.image = keyImage
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                if let index = find(self.assetCollections, assetCollection) {
+                    if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCAssetCollectionCell {
+                        cell.keyImageView.image = keyImage
+                    }
+                }
             })
         }
         

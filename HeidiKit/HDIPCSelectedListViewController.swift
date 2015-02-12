@@ -9,23 +9,22 @@
 import UIKit
 import Photos
 
-class HDIPCSelectedListViewController: UITableViewController {
+class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChangeObserver {
     var assets : NSMutableOrderedSet!
     var imageAssets = [HDIPCSelectedAsset]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+        
         assets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            self.imageAssets.append(HDIPCSelectedAsset(asset: obj as PHAsset))
+            let imageAsset = HDIPCSelectedAsset(obj as PHAsset)
+            self.imageAssets.append(imageAsset)
+            self.downloadImageAsset(imageAsset)
         }
         
         editing = true
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Table view data source
@@ -39,6 +38,8 @@ class HDIPCSelectedListViewController: UITableViewController {
     }
     
     @IBAction func dismiss() {
+        PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+        
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -47,30 +48,42 @@ class HDIPCSelectedListViewController: UITableViewController {
         
         // Configure the cell...
         let asset = imageAssets[indexPath.row]
-
-        if let image = asset.image {
-            cell.thumnailImageView.image = image
-        } else {
-            cell.thumnailImageView.image = nil
-            asset.loadImage({ (asset) -> Void in
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-            })
-        }
         
         if let fileName = asset.fileName {
             cell.nameLabel.text = fileName
         } else {
             cell.nameLabel.text = "Loading..."
         }
-        
         cell.dateLabel.text = asset.formattedDate
-        cell.resolutionLabel.text = asset.resolution
-        
-        if let fileSize = asset.fileSize {
-            cell.fileSizeLabel.text = String(format: "%0.2fMB", Double(fileSize) / 1024.0 / 1024.0)
-        } else {
+
+        if asset.needLoading {
+            cell.resolutionLabel.text = "Downloading..."
             cell.fileSizeLabel.text = nil
+            cell.downloadIndicatorView.startAnimating()
+        } else {
+            cell.resolutionLabel.text = asset.resolution
+            if let fileSize = asset.fileSize {
+                cell.fileSizeLabel.text = String(format: "%0.2fMB", Double(fileSize) / 1024.0 / 1024.0)
+            } else {
+                cell.fileSizeLabel.text = nil
+            }
+            cell.downloadIndicatorView.stopAnimating()
         }
+
+        if let thumbnail = asset.thumbnail {
+            cell.thumnailImageView.image = thumbnail
+            
+        } else {
+            cell.thumnailImageView.image = nil
+            asset.loadThumbnail({ (asset) -> Void in
+                if let index = find(self.imageAssets, asset) {
+                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCSelectedAssetCell {
+                        cell.thumnailImageView.image = asset.thumbnail
+                    }
+                }
+            })
+        }
+        
         
         return cell
     }
@@ -81,7 +94,12 @@ class HDIPCSelectedListViewController: UITableViewController {
     // Return NO if you do not want the specified item to be editable.
     return true
     }
+    
     */
+    
+    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String! {
+        return "Deselect"
+    }
     
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -116,4 +134,35 @@ class HDIPCSelectedListViewController: UITableViewController {
     }
     */
     
+    func photoLibraryDidChange(changeInstance: PHChange!) {
+        dispatch_async(dispatch_get_main_queue()) {
+            for (index, imageAsset) in enumerate(self.imageAssets) {
+                if let details = changeInstance.changeDetailsForObject(imageAsset.asset) {
+                    if details.assetContentChanged {
+                        let afterAsset = HDIPCSelectedAsset(details.objectAfterChanges as PHAsset)
+                        self.imageAssets[index] = afterAsset
+                        self.downloadImageAsset(afterAsset)
+                        
+                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func downloadImageAsset(imageAsset : HDIPCSelectedAsset) {
+        imageAsset.downloadFullsizeImage({ (asset) -> Void in
+            if let index = find(self.imageAssets, asset) {
+                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCSelectedAssetCell {
+                    cell.resolutionLabel.text = asset.resolution
+                    if let fileSize = asset.fileSize {
+                        cell.fileSizeLabel.text = String(format: "%0.2fMB", Double(fileSize) / 1024.0 / 1024.0)
+                    } else {
+                        cell.fileSizeLabel.text = nil
+                    }
+                    cell.downloadIndicatorView.stopAnimating()
+                }
+            }
+        })
+    }
 }

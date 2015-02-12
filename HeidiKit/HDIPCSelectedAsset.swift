@@ -9,40 +9,47 @@
 import UIKit
 import Photos
 
-class HDIPCSelectedAsset {
+class HDIPCSelectedAsset : Equatable {
     let asset : PHAsset
-    var image : UIImage?
+    var thumbnail : UIImage?
     var fileName : String?
     var fileSize : Int?
+    var needLoading = true
     var formattedDate : String {
         get {
             return NSDateFormatter.localizedStringFromDate(asset.creationDate, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
-    var resolution : String {
-        get {
-            return "\(asset.pixelWidth) x \(asset.pixelHeight)"
-        }
-    }
+    var resolution : String
     
-    init(asset : PHAsset) {
+    init(_ asset : PHAsset) {
         self.asset = asset
         
-        let options = PHImageRequestOptions()
-        options.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+        resolution = "\(asset.pixelWidth) x \(asset.pixelHeight)"
         
-        // request max size for title
-        PHImageManager.defaultManager().requestImageDataForAsset(asset, options: nil) { (imageData, dataUTI, orientation, info) -> Void in
+        loadData()
+    }
+    
+    private func loadData() {
+        let options = PHImageRequestOptions()
+        options.version = PHImageRequestOptionsVersion.Current
+        options.networkAccessAllowed = false
+        options.synchronous = true
+        
+        // request data for file name
+        PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options) { (imageData, dataUTI, orientation, info) -> Void in
             if let url = info["PHImageFileURLKey"] as? NSURL {
                 self.fileName = "\(url.lastPathComponent!)"
+            } else {
+                self.fileName = "NO NAME"
             }
             self.fileSize = imageData.length
         }
     }
     
-    func loadImage(completionHandler : ((HDIPCSelectedAsset) -> Void)?) {
+    func loadThumbnail(completionHandler : ((HDIPCSelectedAsset) -> Void)?) {
         PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: 68, height: 68), contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image, info) -> Void in
-            self.image = image
+            self.thumbnail = image
             
             if completionHandler != nil {
                 dispatch_async(dispatch_get_main_queue()) {
@@ -52,4 +59,38 @@ class HDIPCSelectedAsset {
         })
     }
     
+    func downloadFullsizeImage(completionHandler : ((HDIPCSelectedAsset) -> Void)?) {
+        // attempt to load full size image data
+        let options = PHImageRequestOptions()
+        options.deliveryMode = PHImageRequestOptionsDeliveryMode.Opportunistic
+        options.version = PHImageRequestOptionsVersion.Current
+        options.resizeMode = PHImageRequestOptionsResizeMode.None
+        
+        options.networkAccessAllowed = true
+        options.synchronous = false
+        
+        options.progressHandler = { (p1, p2, p3, p4) -> Void in
+            println(p1)
+            println(p2)
+            println(p3)
+            println(p4)
+        }
+        
+        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: CGFloat.max, height: CGFloat.max), contentMode: PHImageContentMode.AspectFit, options: options) { (image, info) -> Void in
+            if (!Bool(info[PHImageResultIsDegradedKey] as NSNumber)) {
+                self.needLoading = false
+                
+                if completionHandler != nil {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler!(self)
+                    }
+                }
+            }
+        }
+    }
 }
+
+func ==(lhs: HDIPCSelectedAsset, rhs:HDIPCSelectedAsset) -> Bool {
+    return lhs.asset == rhs.asset
+}
+
