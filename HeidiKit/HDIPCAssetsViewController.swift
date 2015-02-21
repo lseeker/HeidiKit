@@ -217,7 +217,9 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
             dispatch_async(dispatch_get_main_queue()) {
                 if details.hasIncrementalChanges {
                     self.collectionView?.performBatchUpdates({ () -> Void in
-                        self.assetCollection._assetsFetchResult = details.fetchResultAfterChanges
+                        if self.assetCollection._assetsFetchResult != details.fetchResultAfterChanges {
+                            self.assetCollection._assetsFetchResult = details.fetchResultAfterChanges
+                        }
                         
                         if let removedIndexes = details.removedIndexes {
                             var removedIndexPaths = [NSIndexPath]()
@@ -253,7 +255,9 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
                         
                         }, completion: nil)
                 } else {
-                    self.assetCollection._assetsFetchResult = details.fetchResultAfterChanges
+                    if self.assetCollection._assetsFetchResult != details.fetchResultAfterChanges {
+                        self.assetCollection._assetsFetchResult = details.fetchResultAfterChanges
+                    }
                     self.collectionView?.reloadData()
                 }
             }
