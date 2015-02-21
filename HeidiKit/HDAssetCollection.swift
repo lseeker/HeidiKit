@@ -13,11 +13,15 @@ import Darwin
 class HDAssetCollection: NSObject {
     var assetCollection : PHAssetCollection {
         didSet {
-            _assetsFetchResult = nil;
+            _assetsFetchResult = nil
         }
     }
     var keyImage : UIImage?
-    private var _assetsFetchResult : PHFetchResult?
+    var _assetsFetchResult : PHFetchResult? {
+        didSet {
+            keyImage = nil
+        }
+    }
     var assetsFetchResult : PHFetchResult {
         get {
             if _assetsFetchResult != nil {

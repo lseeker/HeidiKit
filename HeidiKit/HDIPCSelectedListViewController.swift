@@ -55,7 +55,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
             cell.nameLabel.text = "Loading..."
         }
         cell.dateLabel.text = asset.formattedDate
-
+        
         if asset.needLoading {
             cell.resolutionLabel.text = "Downloading..."
             cell.fileSizeLabel.text = nil
@@ -69,10 +69,9 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
             }
             cell.downloadIndicatorView.stopAnimating()
         }
-
+        
         if let thumbnail = asset.thumbnail {
             cell.thumnailImageView.image = thumbnail
-            
         } else {
             cell.thumnailImageView.image = nil
             asset.loadThumbnail({ (asset) -> Void in

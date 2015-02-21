@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PHPhotoLibraryChangeObserver {
     @IBOutlet weak var toolbarText: UIBarButtonItem!
     
     var assetCollection : HDAssetCollection!
@@ -43,6 +43,8 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
             assets.append(obj as PHAsset)
         }
         
+        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+        
         requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
         
         imageManager.allowsCachingHighQualityImages = false
@@ -51,6 +53,10 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         scrollToBottomOnLayout = assetCollection.assetCollection.assetCollectionSubtype != PHAssetCollectionSubtype.AlbumRegular && assetCollection.count > 0
         
         collectionView?.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+    }
+    
+    deinit {
+        PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -206,6 +212,55 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         return imagePicker.selectedAssets.count < imagePicker.maxImageCount
     }
     
+    func photoLibraryDidChange(changeInstance: PHChange!) {
+        if let details = changeInstance.changeDetailsForFetchResult(assetCollection.assetsFetchResult) {
+            dispatch_async(dispatch_get_main_queue()) {
+                if details.hasIncrementalChanges {
+                    self.collectionView?.performBatchUpdates({ () -> Void in
+                        self.assetCollection._assetsFetchResult = details.fetchResultAfterChanges
+                        
+                        if let removedIndexes = details.removedIndexes {
+                            var removedIndexPaths = [NSIndexPath]()
+                            removedIndexPaths.reserveCapacity(removedIndexes.count)
+                            removedIndexes.enumerateIndexesUsingBlock({ (idx, stop) -> Void in
+                                removedIndexPaths.append(NSIndexPath(forRow: idx, inSection: 0))
+                            })
+                            self.collectionView?.deleteItemsAtIndexPaths(removedIndexPaths)
+                        }
+                        
+                        if let insertedIndexes = details.insertedIndexes {
+                            var insertedIndexPaths = [NSIndexPath]()
+                            insertedIndexPaths.reserveCapacity(insertedIndexes.count)
+                            insertedIndexes.enumerateIndexesUsingBlock({ (idx, stop) -> Void in
+                                insertedIndexPaths.append(NSIndexPath(forRow: idx, inSection: 0))
+                            })
+                            self.collectionView?.insertItemsAtIndexPaths(insertedIndexPaths)
+                        }
+                        
+                        if let changedIndexes = details.changedIndexes {
+                            var changedIndexPaths = [NSIndexPath]()
+                            changedIndexPaths.reserveCapacity(changedIndexes.count)
+                            changedIndexes.enumerateIndexesUsingBlock({ (idx, stop) -> Void in
+                                changedIndexPaths.append(NSIndexPath(forRow: idx, inSection: 0))
+                            })
+                            self.collectionView?.reloadItemsAtIndexPaths(changedIndexPaths)
+                        }
+                        
+                        details.enumerateMovesWithBlock({ (fromIndex, toIndex) -> Void in
+                            self.collectionView?.moveItemAtIndexPath(NSIndexPath(forRow: fromIndex, inSection:0), toIndexPath: NSIndexPath(forRow: toIndex, inSection: 0))
+                            return
+                        })
+                        
+                        }, completion: nil)
+                } else {
+                    self.assetCollection._assetsFetchResult = details.fetchResultAfterChanges
+                    self.collectionView?.reloadData()
+                }
+            }
+        }
+        
+    }
+    
     /*
     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
     override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -233,5 +288,4 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         let count = floor(collectionView.frame.size.width / size.width)
         return (collectionView.frame.size.width - count * size.width) / (count - 1)
     }
-    
 }

@@ -119,6 +119,13 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
                         }
                     }
                 }
+                
+                if let fetchResult = self.assetCollections[i]._assetsFetchResult {
+                    if let fetchResultChangeDetails = changeInstance.changeDetailsForFetchResult(fetchResult) {
+                        self.assetCollections[i]._assetsFetchResult = fetchResultChangeDetails.fetchResultAfterChanges
+                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    }
+                }
             }
         }
     }
