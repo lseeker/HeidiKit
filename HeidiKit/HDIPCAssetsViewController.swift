@@ -45,9 +45,9 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
         
-        requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
+        requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
         
-        imageManager.allowsCachingHighQualityImages = false
+        //imageManager.allowsCachingHighQualityImages = false
         imageManager.startCachingImagesForAssets(assets, targetSize: size, contentMode: PHImageContentMode.AspectFill, options: requestOptions)
         
         scrollToBottomOnLayout = assetCollection.assetCollection.assetCollectionSubtype != PHAssetCollectionSubtype.AlbumRegular && assetCollection.count > 0

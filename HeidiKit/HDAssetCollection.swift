@@ -94,7 +94,7 @@ class HDAssetCollection: NSObject {
             let imageRequestOptions = PHImageRequestOptions()
             imageRequestOptions.synchronous = true // synchronous for asset order
             imageRequestOptions.version = PHImageRequestOptionsVersion.Current
-            imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
+            imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
             imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
             
             let scale = UIScreen.mainScreen().scale
