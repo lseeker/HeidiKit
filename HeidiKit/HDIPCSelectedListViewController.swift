@@ -19,7 +19,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
         
         assets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            let imageAsset = HDIPCSelectedAsset(obj as PHAsset)
+            let imageAsset = HDIPCSelectedAsset(obj as! PHAsset)
             self.imageAssets.append(imageAsset)
             self.downloadImageAsset(imageAsset)
         }
@@ -44,7 +44,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SelectedAssetCell", forIndexPath: indexPath) as HDIPCSelectedAssetCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("SelectedAssetCell", forIndexPath: indexPath) as! HDIPCSelectedAssetCell
         
         // Configure the cell...
         let asset = imageAssets[indexPath.row]
@@ -138,7 +138,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
             for (index, imageAsset) in enumerate(self.imageAssets) {
                 if let details = changeInstance.changeDetailsForObject(imageAsset.asset) {
                     if details.assetContentChanged {
-                        let afterAsset = HDIPCSelectedAsset(details.objectAfterChanges as PHAsset)
+                        let afterAsset = HDIPCSelectedAsset(details.objectAfterChanges as! PHAsset)
                         self.imageAssets[index] = afterAsset
                         self.downloadImageAsset(afterAsset)
                         

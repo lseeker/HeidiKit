@@ -81,7 +81,7 @@ class HDAssetCollection: NSObject {
             
             var assets = [PHAsset]()
             result.enumerateObjectsWithOptions(options) { (obj, index, stop) -> Void in
-                assets.append(obj as PHAsset)
+                assets.append(obj as! PHAsset)
                 if assets.count == 3 {
                     stop.memory = true
                 }

@@ -77,7 +77,7 @@ class HDIPCSelectedAsset : Equatable {
         }
         
         PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: CGFloat.max, height: CGFloat.max), contentMode: PHImageContentMode.AspectFit, options: options) { (image, info) -> Void in
-            if (!Bool(info[PHImageResultIsDegradedKey] as NSNumber)) {
+            if (!Bool(info[PHImageResultIsDegradedKey] as! NSNumber)) {
                 self.needLoading = false
                 
                 if completionHandler != nil {

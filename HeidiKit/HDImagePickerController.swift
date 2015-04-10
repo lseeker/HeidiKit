@@ -53,7 +53,7 @@ public class HDImagePickerController: UINavigationController {
             var array = [PHAsset]()
             array.reserveCapacity(selectedAssets.count)
             selectedAssets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-                array.append(obj as PHAsset)
+                array.append(obj as! PHAsset)
             }
             return array
         }
@@ -61,9 +61,9 @@ public class HDImagePickerController: UINavigationController {
         func photoLibraryDidChange(changeInstance: PHChange!) {
             dispatch_async(dispatch_get_main_queue()) {
                 self.selectedAssets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-                    if let details = changeInstance.changeDetailsForObject(obj as PHAsset) {
+                    if let details = changeInstance.changeDetailsForObject(obj as! PHAsset) {
                         if details.assetContentChanged {
-                            let asset = details.objectAfterChanges as PHAsset
+                            let asset = details.objectAfterChanges as! PHAsset
                             self.selectedAssets.setObject(asset, atIndex: index)
                         }
                     }
@@ -75,11 +75,11 @@ public class HDImagePickerController: UINavigationController {
     
     
     class public func newImagePickerController() -> HDImagePickerController {
-        return UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateInitialViewController() as HDImagePickerController
+        return UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateInitialViewController() as! HDImagePickerController
     }
     
-    override public init() {
-        super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateViewControllerWithIdentifier("HDIPCAssetCollectionViewController") as UIViewController)
+    public init() {
+        super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateViewControllerWithIdentifier("HDIPCAssetCollectionViewController") as! UIViewController)
     }
     
     required public init(coder aDecoder: NSCoder) {

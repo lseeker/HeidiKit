@@ -15,7 +15,7 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let imagePicker = navigationController as HDImagePickerController
+        let imagePicker = navigationController as! HDImagePickerController
         imagePicker.setupToolbar(self)
         
         loadCollections()
@@ -58,47 +58,47 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         // camera roll
         var result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.SmartAlbumUserLibrary, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // photo stream
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumMyPhotoStream, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // favorites
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.SmartAlbumFavorites, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // regular album
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // synced event
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumSyncedEvent, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // synced faces
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumSyncedFaces, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // synced album
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumSyncedAlbum, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // imported
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumImported, options: nil);
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // cloud shared
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumCloudShared, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assetCollections.append(HDAssetCollection(obj as PHAssetCollection))
+            assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         
         self.assetCollections = assetCollections
@@ -145,7 +145,7 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        var visibleIndexPaths = tableView.indexPathsForVisibleRows() as [NSIndexPath]?
+        var visibleIndexPaths = tableView.indexPathsForVisibleRows() as! [NSIndexPath]?
         if visibleIndexPaths == nil {
             visibleIndexPaths = [NSIndexPath]()
         }
@@ -171,7 +171,7 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("AssetCollectionCell", forIndexPath: indexPath) as HDIPCAssetCollectionCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("AssetCollectionCell", forIndexPath: indexPath) as! HDIPCAssetCollectionCell
         
         // Configure the cell...
         let assetCollection = assetCollections[indexPath.row]

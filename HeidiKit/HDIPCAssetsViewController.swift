@@ -29,7 +29,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         collectionView?.allowsSelection = true
         collectionView?.allowsMultipleSelection = true
         
-        let imagePicker = navigationController as HDImagePickerController
+        let imagePicker = navigationController as! HDImagePickerController
         imagePicker.setupToolbar(self)
         
         let screenSize = UIScreen.mainScreen().bounds.size
@@ -40,7 +40,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         var assets = [PHAsset]()
         assetCollection.assetsFetchResult.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assets.append(obj as PHAsset)
+            assets.append(obj as! PHAsset)
         }
         
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
@@ -62,10 +62,10 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let imagePicker = navigationController as HDImagePickerController
+        let imagePicker = navigationController as! HDImagePickerController
         imagePicker.updateToolbar()
         
-        collectionView?.reloadItemsAtIndexPaths(collectionView?.indexPathsForSelectedItems() as [NSIndexPath])
+        collectionView?.reloadItemsAtIndexPaths(collectionView?.indexPathsForSelectedItems() as! [NSIndexPath])
     }
     
     override func viewWillLayoutSubviews() {
@@ -125,9 +125,9 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("AssetCell", forIndexPath: indexPath) as HDIPCAssetCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("AssetCell", forIndexPath: indexPath) as! HDIPCAssetCell
         
-        let asset = assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as PHAsset
+        let asset = assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset
         
         // select status update (for album/camera roll intersection)
         if let imagePicker = navigationController as? HDImagePickerController {
@@ -176,39 +176,39 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
     */
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as HDIPCAssetCell
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! HDIPCAssetCell
         cell.selectedImageView.hidden = false
         cell.imageView.alpha = 0.7
         
-        let imagePicker = navigationController as HDImagePickerController
-        imagePicker.selectedAssets.addObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as PHAsset)
+        let imagePicker = navigationController as! HDImagePickerController
+        imagePicker.selectedAssets.addObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)
         imagePicker.updateToolbar()
     }
     
     override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as HDIPCAssetCell
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! HDIPCAssetCell
         cell.selectedImageView.hidden = true
         cell.imageView.alpha = 1
         
-        let imagePicker = navigationController as HDImagePickerController
-        imagePicker.selectedAssets.removeObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as PHAsset)
+        let imagePicker = navigationController as! HDImagePickerController
+        imagePicker.selectedAssets.removeObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)
         imagePicker.updateToolbar()
     }
     
     override func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as HDIPCAssetCell
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! HDIPCAssetCell
         cell.backgroundColor = UIColor.blackColor()
         cell.imageView.alpha = 0.5
     }
     
     override func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as HDIPCAssetCell
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! HDIPCAssetCell
         cell.backgroundColor = UIColor.whiteColor()
         cell.imageView.alpha = 1
     }
     
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let imagePicker = navigationController as HDImagePickerController
+        let imagePicker = navigationController as! HDImagePickerController
         return imagePicker.selectedAssets.count < imagePicker.maxImageCount
     }
     
