@@ -11,8 +11,6 @@
 		B725D3571A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B725D3561A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift */; };
 		B7269B5B1A779BFC003312C7 /* HDImagePickerController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7269B5A1A779BFC003312C7 /* HDImagePickerController.storyboard */; };
 		B7269B5F1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7269B5E1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift */; };
-		B741558C1B2703A50057A5E5 /* HDTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B741558B1B2703A50057A5E5 /* HDTab.swift */; };
-		B741558E1B272D070057A5E5 /* HDTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = B741558D1B272D070057A5E5 /* HDTab.xib */; };
 		B74877001A8658030007E84C /* HDIPCAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74876FF1A8658030007E84C /* HDIPCAssetsViewController.swift */; };
 		B74877021A8667DC0007E84C /* HDIPCAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74877011A8667DC0007E84C /* HDIPCAssetCell.swift */; };
 		B74877041A87B8340007E84C /* HDIPCAssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74877031A87B8340007E84C /* HDIPCAssetCollectionCell.swift */; };
@@ -31,8 +29,6 @@
 		B7269B561A76B3ED003312C7 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		B7269B5A1A779BFC003312C7 /* HDImagePickerController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HDImagePickerController.storyboard; sourceTree = "<group>"; };
 		B7269B5E1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCollectionViewController.swift; sourceTree = "<group>"; };
-		B741558B1B2703A50057A5E5 /* HDTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDTab.swift; sourceTree = "<group>"; };
-		B741558D1B272D070057A5E5 /* HDTab.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDTab.xib; sourceTree = "<group>"; };
 		B74876FF1A8658030007E84C /* HDIPCAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetsViewController.swift; sourceTree = "<group>"; };
 		B74877011A8667DC0007E84C /* HDIPCAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCell.swift; sourceTree = "<group>"; };
 		B74877031A87B8340007E84C /* HDIPCAssetCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCollectionCell.swift; sourceTree = "<group>"; };
@@ -86,15 +82,6 @@
 			name = HDImagePickerController;
 			sourceTree = "<group>";
 		};
-		B74155881B2700260057A5E5 /* HDTabView */ = {
-			isa = PBXGroup;
-			children = (
-				B741558B1B2703A50057A5E5 /* HDTab.swift */,
-				B741558D1B272D070057A5E5 /* HDTab.xib */,
-			);
-			name = HDTabView;
-			sourceTree = "<group>";
-		};
 		B7BD985F1995B28800C7A0CC = {
 			isa = PBXGroup;
 			children = (
@@ -118,7 +105,6 @@
 		B7BD986B1995B28800C7A0CC /* HeidiKit */ = {
 			isa = PBXGroup;
 			children = (
-				B74155881B2700260057A5E5 /* HDTabView */,
 				B7F3391E1A88F68200FDEC8B /* HDImageViewController */,
 				B7F97D131A83A6C0001E97D3 /* HeidiKit.xcassets */,
 				B7269B4F1A7697D8003312C7 /* HDImagePickerController */,
@@ -252,7 +238,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7F97D141A83A6C0001E97D3 /* HeidiKit.xcassets in Resources */,
-				B741558E1B272D070057A5E5 /* HDTab.xib in Resources */,
 				B7269B5B1A779BFC003312C7 /* HDImagePickerController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,7 +260,6 @@
 				B7269B5F1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift in Sources */,
 				B74877021A8667DC0007E84C /* HDIPCAssetCell.swift in Sources */,
 				B74877001A8658030007E84C /* HDIPCAssetsViewController.swift in Sources */,
-				B741558C1B2703A50057A5E5 /* HDTab.swift in Sources */,
 				B7F339221A8A436F00FDEC8B /* HDIPCSelectedAsset.swift in Sources */,
 				B725D3551A8BC26C004F4AFC /* HDImagePickerControllerDelegate.swift in Sources */,
 				B725D3571A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift in Sources */,
