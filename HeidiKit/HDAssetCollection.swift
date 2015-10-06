@@ -40,7 +40,7 @@ class HDAssetCollection: NSObject {
     }
     var title : String {
         get {
-            return assetCollection.localizedTitle
+            return assetCollection.localizedTitle!
         }
     }
     var count : Int {
@@ -62,6 +62,7 @@ class HDAssetCollection: NSObject {
     func fetchKeyImage(resultHandler : ((keyImage : UIImage!) -> Void)) {
         if keyImage != nil {
             resultHandler(keyImage: keyImage)
+            return
         }
         if assetsFetchResult.count == 0 {
             return
@@ -71,13 +72,15 @@ class HDAssetCollection: NSObject {
             let fetchOptions = PHFetchOptions()
             fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.Image.rawValue)
             
-            var result = PHAsset.fetchKeyAssetsInAssetCollection(self.assetCollection, options: fetchOptions)
-            
-            if result.count == 0 {
-                result = self.assetsFetchResult
+            var resultOptional = PHAsset.fetchKeyAssetsInAssetCollection(self.assetCollection, options: fetchOptions)
+            if resultOptional?.count == 0 {
+                resultOptional = self.assetsFetchResult
             }
             
-            var options = self.assetCollection.assetCollectionSubtype == .SmartAlbumUserLibrary ? NSEnumerationOptions.Reverse : NSEnumerationOptions.allZeros
+            guard let result = resultOptional
+                else { return }
+            
+            let options = self.assetCollection.assetCollectionSubtype == .SmartAlbumUserLibrary ? .Reverse : NSEnumerationOptions()
             
             var assets = [PHAsset]()
             result.enumerateObjectsWithOptions(options) { (obj, index, stop) -> Void in
@@ -113,29 +116,29 @@ class HDAssetCollection: NSObject {
             CGContextSetFillColorWithColor(context, color?.CGColor)
             CGContextFillRect(context, CGRect(x: 0, y: 0, width: width, height: height))
             
-            var images = [UIImage]()
             let count = assets.count
-            for (index, asset) in enumerate(reverse(assets)) {
+            for (index, asset) in Array(assets.reverse()).enumerate() {
                 let factor = CGFloat((count - 1 - index) * 2) * scale
                 let sideLength = 68 * scale - factor * 2
                 let size = CGSize(width: sideLength, height: sideLength)
                 PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: size, contentMode: PHImageContentMode.AspectFill, options: imageRequestOptions, resultHandler: { (image, info) -> Void in
                     
                     let rect = CGRect(origin: CGPoint(x: factor, y: factor * 3), size: size)
-                    var cropSize = min(image.size.width, image.size.height)
-                    var cropOrigin = CGPoint(x: (image.size.width - cropSize) / 2, y: (image.size.height - cropSize) / 2)
+                    let cropSize = min(image!.size.width, image!.size.height)
+                    let cropOrigin = CGPoint(x: (image!.size.width - cropSize) / 2, y: (image!.size.height - cropSize) / 2)
                     
-                    CGContextDrawImage(context, rect, CGImageCreateWithImageInRect(image.CGImage, CGRect(origin: cropOrigin, size: CGSize(width: cropSize, height: cropSize))))
+                    CGContextDrawImage(context, rect, CGImageCreateWithImageInRect(image!.CGImage, CGRect(origin: cropOrigin, size: CGSize(width: cropSize, height: cropSize))))
                 })
             }
             CGContextSetStrokeColorWithColor(context, color?.CGColor)
             CGContextAddRect(context, CGRect(x: 0, y: height - 4 * scale + 0.5, width: width, height: 2 * scale))
             CGContextStrokePath(context)
             
-            let cgImage = CGBitmapContextCreateImage(context)
-            UIGraphicsEndImageContext()
-            
-            self.keyImage = UIImage(CGImage: cgImage, scale: scale, orientation: UIImageOrientation.DownMirrored)
+            if let cgImage = CGBitmapContextCreateImage(context) {
+                UIGraphicsEndImageContext()
+                
+                self.keyImage = UIImage(CGImage: cgImage, scale: scale, orientation: UIImageOrientation.DownMirrored)
+            }
             dispatch_async(dispatch_get_main_queue()) {
                 resultHandler(keyImage: self.keyImage)
             }

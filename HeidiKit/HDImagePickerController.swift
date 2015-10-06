@@ -58,7 +58,7 @@ public class HDImagePickerController: UINavigationController {
             return array
         }
         
-        func photoLibraryDidChange(changeInstance: PHChange!) {
+        func photoLibraryDidChange(changeInstance: PHChange) {
             dispatch_async(dispatch_get_main_queue()) {
                 self.selectedAssets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
                     if let details = changeInstance.changeDetailsForObject(obj as! PHAsset) {
@@ -79,10 +79,10 @@ public class HDImagePickerController: UINavigationController {
     }
     
     public init() {
-        super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateViewControllerWithIdentifier("HDIPCAssetCollectionViewController") as! UIViewController)
+        super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateViewControllerWithIdentifier("HDIPCAssetCollectionViewController") )
     }
     
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

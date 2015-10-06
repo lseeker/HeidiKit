@@ -75,7 +75,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
         } else {
             cell.thumnailImageView.image = nil
             asset.loadThumbnail({ (asset) -> Void in
-                if let index = find(self.imageAssets, asset) {
+                if let index = self.imageAssets.indexOf(asset) {
                     if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCSelectedAssetCell {
                         cell.thumnailImageView.image = asset.thumbnail
                     }
@@ -96,7 +96,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     
     */
     
-    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String! {
+    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
         return "Deselect"
     }
     
@@ -133,9 +133,9 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     }
     */
     
-    func photoLibraryDidChange(changeInstance: PHChange!) {
+    func photoLibraryDidChange(changeInstance: PHChange) {
         dispatch_async(dispatch_get_main_queue()) {
-            for (index, imageAsset) in enumerate(self.imageAssets) {
+            for (index, imageAsset) in self.imageAssets.enumerate() {
                 if let details = changeInstance.changeDetailsForObject(imageAsset.asset) {
                     if details.assetContentChanged {
                         let afterAsset = HDIPCSelectedAsset(details.objectAfterChanges as! PHAsset)
@@ -151,7 +151,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     
     private func downloadImageAsset(imageAsset : HDIPCSelectedAsset) {
         imageAsset.downloadFullsizeImage({ (asset) -> Void in
-            if let index = find(self.imageAssets, asset) {
+            if let index = self.imageAssets.indexOf(asset) {
                 if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCSelectedAssetCell {
                     cell.resolutionLabel.text = asset.resolution
                     if let fileSize = asset.fileSize {

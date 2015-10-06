@@ -52,7 +52,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         scrollToBottomOnLayout = assetCollection.assetCollection.assetCollectionSubtype != PHAssetCollectionSubtype.AlbumRegular && assetCollection.count > 0
         
-        collectionView?.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        collectionView?.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
     }
     
     deinit {
@@ -65,7 +65,12 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         let imagePicker = navigationController as! HDImagePickerController
         imagePicker.updateToolbar()
         
-        collectionView?.reloadItemsAtIndexPaths(collectionView?.indexPathsForSelectedItems() as! [NSIndexPath])
+        guard let collectionView = collectionView
+            else { return }
+        
+        if let selectedItemsIndexes = collectionView.indexPathsForSelectedItems() {
+            collectionView.reloadItemsAtIndexPaths(selectedItemsIndexes)
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -87,13 +92,15 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
             let beforeContentPosition = realContentOffset / realContentHeight
             
             // caculate contentSize after transition
-            let frameSize = collectionView.frame.size
+            //let frameSize = collectionView.frame.size
+            /*
             collectionView.frame.size = size
             let invalidationContext = UICollectionViewFlowLayoutInvalidationContext()
             invalidationContext.invalidateFlowLayoutDelegateMetrics = true
             collectionViewLayout.invalidateLayoutWithContext(invalidationContext)
             let afterContentSize = collectionViewLayout.collectionViewContentSize()
-            collectionView.frame.size = frameSize
+            collectionView.frame.size = afterContentSize
+            */
             
             coordinator.animateAlongsideTransition({ (context) -> Void in
                 // offset adjustment
@@ -145,7 +152,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         // Configure the cell
         cell.imageRequestID = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: PHImageContentMode.AspectFill, options: self.requestOptions) { (image, info) -> Void in
-            if let requestID = info[PHImageResultRequestIDKey] as? NSNumber {
+            if let requestID = info![PHImageResultRequestIDKey] as? NSNumber {
                 dispatch_async(dispatch_get_main_queue()) {
                     if requestID.intValue == cell.imageRequestID {
                         cell.imageView.image = image
@@ -212,7 +219,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         return imagePicker.selectedAssets.count < imagePicker.maxImageCount
     }
     
-    func photoLibraryDidChange(changeInstance: PHChange!) {
+    func photoLibraryDidChange(changeInstance: PHChange) {
         if let details = changeInstance.changeDetailsForFetchResult(assetCollection.assetsFetchResult) {
             dispatch_async(dispatch_get_main_queue()) {
                 if details.hasIncrementalChanges {

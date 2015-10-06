@@ -17,7 +17,7 @@ class HDIPCSelectedAsset : Equatable {
     var needLoading = true
     var formattedDate : String {
         get {
-            return NSDateFormatter.localizedStringFromDate(asset.creationDate, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+            return NSDateFormatter.localizedStringFromDate(asset.creationDate!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     var resolution : String
@@ -38,12 +38,12 @@ class HDIPCSelectedAsset : Equatable {
         
         // request data for file name
         PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options) { (imageData, dataUTI, orientation, info) -> Void in
-            if let url = info["PHImageFileURLKey"] as? NSURL {
+            if let url = info!["PHImageFileURLKey"] as? NSURL {
                 self.fileName = "\(url.lastPathComponent!)"
             } else {
                 self.fileName = "NO NAME"
             }
-            self.fileSize = imageData.length
+            self.fileSize = imageData!.length
         }
     }
     
@@ -70,14 +70,14 @@ class HDIPCSelectedAsset : Equatable {
         options.synchronous = false
         
         options.progressHandler = { (p1, p2, p3, p4) -> Void in
-            println(p1)
-            println(p2)
-            println(p3)
-            println(p4)
+            print(p1)
+            print(p2)
+            print(p3)
+            print(p4)
         }
         
         PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: CGFloat.max, height: CGFloat.max), contentMode: PHImageContentMode.AspectFit, options: options) { (image, info) -> Void in
-            if (!Bool(info[PHImageResultIsDegradedKey] as! NSNumber)) {
+            if (!Bool(info![PHImageResultIsDegradedKey] as! NSNumber)) {
                 self.needLoading = false
                 
                 if completionHandler != nil {

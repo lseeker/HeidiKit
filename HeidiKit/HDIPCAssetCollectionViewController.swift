@@ -31,7 +31,7 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         super.viewWillAppear(animated)
         
         let status = PHPhotoLibrary.authorizationStatus()
-        switch (PHPhotoLibrary.authorizationStatus()) {
+        switch (status) {
         case .NotDetermined:
             PHPhotoLibrary.requestAuthorization { (status) -> Void in
                 if status == PHAuthorizationStatus.Authorized {
@@ -104,7 +104,7 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         self.assetCollections = assetCollections
     }
     
-    func photoLibraryDidChange(changeInstance: PHChange!) {
+    func photoLibraryDidChange(changeInstance: PHChange) {
         dispatch_async(dispatch_get_main_queue()) {
             for var i = 0; i < self.assetCollections.count; ++i {
                 if let assetCollectionChangeDetails = changeInstance.changeDetailsForObject(self.assetCollections[i].assetCollection) {
@@ -145,12 +145,12 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        var visibleIndexPaths = tableView.indexPathsForVisibleRows() as! [NSIndexPath]?
+        var visibleIndexPaths = tableView.indexPathsForVisibleRows 
         if visibleIndexPaths == nil {
             visibleIndexPaths = [NSIndexPath]()
         }
         
-        for (index, assetCollection) in enumerate(assetCollections) {
+        for (index, assetCollection) in assetCollections.enumerate() {
             var visible = false
             for visibleIndexPath in visibleIndexPaths! {
                 if index == visibleIndexPath.row {
@@ -184,7 +184,7 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         } else {
             cell.keyImageView.image = UIImage(named: "EmptyAssetCollection", inBundle: NSBundle(forClass: HDIPCAssetCollectionViewController.self), compatibleWithTraitCollection: nil)
             assetCollection.fetchKeyImage({ (keyImage) -> Void in
-                if let index = find(self.assetCollections, assetCollection) {
+                if let index = self.assetCollections.indexOf(assetCollection) {
                     if let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCAssetCollectionCell {
                         cell.keyImageView.image = keyImage
                     }
@@ -208,7 +208,7 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
         if let assetsViewController = segue.destinationViewController as? HDIPCAssetsViewController {
-            assetsViewController.assetCollection = assetCollections[tableView.indexPathForSelectedRow()!.row]
+            assetsViewController.assetCollection = assetCollections[tableView.indexPathForSelectedRow!.row]
         }
     }
 }
