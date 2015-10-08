@@ -43,7 +43,11 @@ class HDIPCSelectedAsset : Equatable {
             } else {
                 self.fileName = "NO NAME"
             }
-            self.fileSize = imageData!.length
+            if let imageData = imageData {
+                self.fileSize = imageData.length
+            } else {
+                self.fileSize = -1
+            }
         }
     }
     

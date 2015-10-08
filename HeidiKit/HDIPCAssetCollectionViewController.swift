@@ -95,11 +95,13 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
+        /* CANNOT LOAD DATA FROM CLOUD SHARED, PASSED NOW
         // cloud shared
         result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumCloudShared, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
+        */
         
         self.assetCollections = assetCollections
     }
