@@ -122,12 +122,15 @@ class HDAssetCollection: NSObject {
                 let sideLength = 68 * scale - factor * 2
                 let size = CGSize(width: sideLength, height: sideLength)
                 PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: size, contentMode: PHImageContentMode.AspectFill, options: imageRequestOptions, resultHandler: { (image, info) -> Void in
+                    guard let image = image else {
+                        return
+                    }
                     
                     let rect = CGRect(origin: CGPoint(x: factor, y: factor * 3), size: size)
-                    let cropSize = min(image!.size.width, image!.size.height)
-                    let cropOrigin = CGPoint(x: (image!.size.width - cropSize) / 2, y: (image!.size.height - cropSize) / 2)
+                    let cropSize = min(image.size.width, image.size.height)
+                    let cropOrigin = CGPoint(x: (image.size.width - cropSize) / 2, y: (image.size.height - cropSize) / 2)
                     
-                    CGContextDrawImage(context, rect, CGImageCreateWithImageInRect(image!.CGImage, CGRect(origin: cropOrigin, size: CGSize(width: cropSize, height: cropSize))))
+                    CGContextDrawImage(context, rect, CGImageCreateWithImageInRect(image.CGImage, CGRect(origin: cropOrigin, size: CGSize(width: cropSize, height: cropSize))))
                 })
             }
             CGContextSetStrokeColorWithColor(context, color?.CGColor)

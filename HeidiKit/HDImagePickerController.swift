@@ -90,6 +90,30 @@ public class HDImagePickerController: UINavigationController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
+    public override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override public func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateToolbar()
+    }
+    
+    func setupToolbar(viewController : UIViewController) {
+        viewController.toolbarItems = self.toolbarItems
+    }
+    
+    func updateToolbar() {
+        toolbarText.title = "\(selectedAssets.count) / \(maxImageCount)"
+        toolbarSelectedListButton.enabled = selectedAssets.count > 0
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        becomeFirstResponder()
+    }
+    
     @IBAction func doDone() {
         if let delegate = imagePickerDelegate {
             delegate.imagePickerController(self, didFinishWithPhotoAssets: selectedAssets.array())
@@ -109,20 +133,6 @@ public class HDImagePickerController: UINavigationController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    override public func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        updateToolbar()
-    }
-    
-    func setupToolbar(viewController : UIViewController) {
-        viewController.toolbarItems = self.toolbarItems
-    }
-    
-    func updateToolbar() {
-        toolbarText.title = "\(selectedAssets.count) / \(maxImageCount)"
-        toolbarSelectedListButton.enabled = selectedAssets.count > 0
-    }
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let navigationController = segue.destinationViewController as? UINavigationController {
