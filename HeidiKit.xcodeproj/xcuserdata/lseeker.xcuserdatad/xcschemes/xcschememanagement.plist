@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>HeidiKit.xcscheme_^#shared#^_</key>
+		<key>HeidiKit.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
@@ -17,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>B747AE861BCC406A00E2A518</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>B7BD98681995B28800C7A0CC</key>
 		<dict>
 			<key>primary</key>

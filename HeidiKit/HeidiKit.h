@@ -2,8 +2,8 @@
 //  HeidiKit.h
 //  HeidiKit
 //
-//  Created by Yun-young LEE on 2014. 8. 9..
-//  Copyright (c) 2014년 inode.kr. All rights reserved.
+//  Created by Yun-young LEE on 2015. 10. 13..
+//  Copyright © 2015년 inode.kr. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
