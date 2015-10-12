@@ -78,7 +78,7 @@ public class HDImagePickerController: UINavigationController {
         return UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateInitialViewController() as! HDImagePickerController
     }
     
-    public init() {
+    init() {
         super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateViewControllerWithIdentifier("HDIPCAssetCollectionViewController") )
     }
     
