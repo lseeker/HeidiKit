@@ -1,4 +1,3 @@
-
 /* Class = "UILabel"; text = "Image filename"; ObjectID = "1u9-8n-cZ4"; */
 "1u9-8n-cZ4.text" = "Image filename";
 
@@ -6,10 +5,10 @@
 "9MR-aX-Hjt.title" = "ToolbarText";
 
 /* Class = "UINavigationItem"; title = "Photos"; ObjectID = "Li0-EH-Kgs"; */
-"Li0-EH-Kgs.title" = "Photos";
+"Li0-EH-Kgs.title" = "사진";
 
 /* Class = "UINavigationItem"; title = "Selected Photos"; ObjectID = "MPc-mf-N1Z"; */
-"MPc-mf-N1Z.title" = "Selected Photos";
+"MPc-mf-N1Z.title" = "선택한 사진";
 
 /* Class = "UILabel"; text = "AssetCollectionDetail"; ObjectID = "RCQ-tx-jxy"; */
 "RCQ-tx-jxy.text" = "AssetCollectionDetail";
@@ -28,3 +27,4 @@
 
 /* Class = "UIBarButtonItem"; title = "ToolbarText"; ObjectID = "z89-aq-BVI"; */
 "z89-aq-BVI.title" = "ToolbarText";
+
