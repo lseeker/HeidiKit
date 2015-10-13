@@ -9,16 +9,7 @@
         <scene sceneID="WOc-ck-ZhN">
             <objects>
                 <navigationController storyboardIdentifier="HDImagePickerController" extendedLayoutIncludesOpaqueBars="YES" toolbarHidden="NO" id="dpi-6d-3ao" customClass="HDImagePickerController" customModule="HeidiKit" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="D9j-1Z-soR"/>
-                        <barButtonItem title="ToolbarText" style="plain" id="9MR-aX-Hjt"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="9cw-F5-SJ1"/>
-                        <barButtonItem image="BarButtonList" id="mP1-0B-jip">
-                            <connections>
-                                <segue destination="qGU-tj-TGN" kind="presentation" id="LKd-mP-ZNS"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="l6M-iP-3hd">
@@ -99,7 +90,16 @@
                             <outlet property="delegate" destination="EI0-w3-zGt" id="TXu-EY-APm"/>
                         </connections>
                     </tableView>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="u6R-LY-H1w"/>
+                        <barButtonItem title="ToolbarText" style="plain" id="z89-aq-BVI"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="VDL-8p-Vqq"/>
+                        <barButtonItem image="BarButtonList" id="fP8-QN-1JT">
+                            <connections>
+                                <segue destination="afK-Pt-2HL" kind="show" id="mUK-79-lMp"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Photos" id="Li0-EH-Kgs">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="MPk-bo-Z9q">
                             <connections>
@@ -120,6 +120,7 @@
         <!--Selected Images-->
         <scene sceneID="aPR-n4-n1D">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5GS-Qo-zN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="afK-Pt-2HL" customClass="HDIPCSelectedListViewController" customModule="HeidiKit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="YmR-VW-2fu">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -203,14 +204,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Selected Images" id="MPc-mf-N1Z">
-                        <barButtonItem key="rightBarButtonItem" title="Close" id="ua2-he-sTl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="ua2-he-sTl">
                             <connections>
-                                <action selector="dismiss" destination="afK-Pt-2HL" id="oRg-G1-PYD"/>
+                                <action selector="doDone" destination="5GS-Qo-zN8" id="v8r-4M-AwA"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5GS-Qo-zN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="167" y="500"/>
         </scene>
@@ -269,7 +269,16 @@
                             <outlet property="delegate" destination="PB5-AZ-NDU" id="9hp-ef-yRF"/>
                         </connections>
                     </collectionView>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="D9j-1Z-soR"/>
+                        <barButtonItem title="ToolbarText" style="plain" id="9MR-aX-Hjt"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="9cw-F5-SJ1"/>
+                        <barButtonItem image="BarButtonList" id="mP1-0B-jip">
+                            <connections>
+                                <segue destination="afK-Pt-2HL" kind="show" id="QJu-Dr-dVq"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="c1g-u3-13C">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="Hyo-NE-t1r">
                             <connections>
@@ -282,27 +291,12 @@
             </objects>
             <point key="canvasLocation" x="966" y="-297"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="bOC-vH-hjM">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qGU-tj-TGN" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DSe-mb-V7L">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="afK-Pt-2HL" kind="relationship" relationship="rootViewController" id="f8b-6l-wF9"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QI9-bu-ku0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-533" y="501"/>
-        </scene>
     </scenes>
     <resources>
         <image name="BarButtonList" width="22" height="22"/>
         <image name="BlueCheckSelected" width="31" height="31"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="QJu-Dr-dVq"/>
+    </inferredMetricsTieBreakers>
 </document>

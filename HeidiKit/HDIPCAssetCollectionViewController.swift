@@ -15,9 +15,6 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let imagePicker = navigationController as! HDImagePickerController
-        imagePicker.setupToolbar(self)
-        
         loadCollections()
         
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)

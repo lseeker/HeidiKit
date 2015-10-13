@@ -10,9 +10,6 @@ import UIKit
 import Photos
 
 public class HDImagePickerController: UINavigationController {
-    @IBOutlet weak var toolbarText: UIBarButtonItem!
-    @IBOutlet weak var toolbarSelectedListButton: UIBarButtonItem!
-    
     @IBOutlet public var imagePickerDelegate : HDImagePickerControllerDelegate?
     @IBInspectable public var maxImageCount = 5
     
@@ -71,8 +68,8 @@ public class HDImagePickerController: UINavigationController {
             }
         }
     }
-    let selectedAssets = HDIPCSelectedAssets()
     
+    let selectedAssets = HDIPCSelectedAssets()
     
     class public func newImagePickerController() -> HDImagePickerController {
         return UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateInitialViewController() as! HDImagePickerController
@@ -94,23 +91,9 @@ public class HDImagePickerController: UINavigationController {
         return true
     }
     
-    override public func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        updateToolbar()
-    }
-    
-    func setupToolbar(viewController : UIViewController) {
-        viewController.toolbarItems = self.toolbarItems
-    }
-    
-    func updateToolbar() {
-        toolbarText.title = "\(selectedAssets.count) / \(maxImageCount)"
-        toolbarSelectedListButton.enabled = selectedAssets.count > 0
-    }
-    
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         becomeFirstResponder()
     }
     
@@ -135,10 +118,8 @@ public class HDImagePickerController: UINavigationController {
     
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let navigationController = segue.destinationViewController as? UINavigationController {
-            if let selectedListViewController = navigationController.topViewController as? HDIPCSelectedListViewController {
-                selectedListViewController.assets = selectedAssets.photoAssets
-            }
+        if let selectedListViewController = segue.destinationViewController as? HDIPCSelectedListViewController {
+            selectedListViewController.assets = selectedAssets.photoAssets
         }
     }
 }

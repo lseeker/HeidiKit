@@ -29,9 +29,6 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         collectionView?.allowsSelection = true
         collectionView?.allowsMultipleSelection = true
         
-        let imagePicker = navigationController as! HDImagePickerController
-        imagePicker.setupToolbar(self)
-        
         let screenSize = UIScreen.mainScreen().bounds.size
         let base = min(screenSize.width, screenSize.height)
         let side = (base - 6) / 4
@@ -61,9 +58,6 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let imagePicker = navigationController as! HDImagePickerController
-        imagePicker.updateToolbar()
         
         guard let collectionView = collectionView
             else { return }
@@ -189,7 +183,6 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         let imagePicker = navigationController as! HDImagePickerController
         imagePicker.selectedAssets.addObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)
-        imagePicker.updateToolbar()
     }
     
     override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
@@ -199,7 +192,6 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         let imagePicker = navigationController as! HDImagePickerController
         imagePicker.selectedAssets.removeObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)
-        imagePicker.updateToolbar()
     }
     
     override func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
