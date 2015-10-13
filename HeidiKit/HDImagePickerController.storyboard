@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="dpi-6d-3ao">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -22,7 +23,6 @@
                     </toolbar>
                     <connections>
                         <outlet property="toolbarSelectedListButton" destination="mP1-0B-jip" id="eO3-sJ-cfv"/>
-                        <outlet property="toolbarText" destination="9MR-aX-Hjt" id="6B9-yl-lJo"/>
                         <segue destination="EI0-w3-zGt" kind="relationship" relationship="rootViewController" id="EKa-PI-v83"/>
                     </connections>
                 </navigationController>
@@ -112,15 +112,18 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="countTextItem" destination="z89-aq-BVI" id="ofu-w2-HJq"/>
+                        <outlet property="selectedButtonItem" destination="fP8-QN-1JT" id="B6R-st-UZX"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mot-Ju-hsu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="167" y="-297"/>
         </scene>
-        <!--Selected Images-->
+        <!--Selected Photos-->
         <scene sceneID="aPR-n4-n1D">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5GS-Qo-zN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="afK-Pt-2HL" customClass="HDIPCSelectedListViewController" customModule="HeidiKit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="YmR-VW-2fu">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -203,7 +206,7 @@
                             <outlet property="delegate" destination="afK-Pt-2HL" id="yZf-bo-NF8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Selected Images" id="MPc-mf-N1Z">
+                    <navigationItem key="navigationItem" title="Selected Photos" id="MPc-mf-N1Z">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="ua2-he-sTl">
                             <connections>
                                 <action selector="doDone" destination="5GS-Qo-zN8" id="v8r-4M-AwA"/>
@@ -211,8 +214,9 @@
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5GS-Qo-zN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="167" y="500"/>
+            <point key="canvasLocation" x="619" y="532"/>
         </scene>
         <!--Assets View Controller-->
         <scene sceneID="jTr-QO-BUj">
@@ -286,6 +290,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="countTextItem" destination="9MR-aX-Hjt" id="jbC-2N-M1m"/>
+                        <outlet property="selectedButtonItem" destination="mP1-0B-jip" id="A8A-i5-6i7"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aFG-fS-lqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -60,11 +60,8 @@ class HDAssetCollection: NSObject {
     }
     
     func fetchKeyImage(resultHandler : ((keyImage : UIImage!) -> Void)) {
-        if keyImage != nil {
+        if let keyImage = keyImage {
             resultHandler(keyImage: keyImage)
-            return
-        }
-        if assetsFetchResult.count == 0 {
             return
         }
         
@@ -80,15 +77,15 @@ class HDAssetCollection: NSObject {
             guard let result = resultOptional
                 else { return }
             
-            let options = self.assetCollection.assetCollectionSubtype == .SmartAlbumUserLibrary ? .Reverse : NSEnumerationOptions()
+            //let options = self.assetCollection.assetCollectionSubtype == .SmartAlbumUserLibrary ? .Reverse : NSEnumerationOptions()
             
             var assets = [PHAsset]()
-            result.enumerateObjectsWithOptions(options) { (obj, index, stop) -> Void in
+            result.enumerateObjectsUsingBlock({ (obj, index, stop) -> Void in
                 assets.append(obj as! PHAsset)
                 if assets.count == 3 {
                     stop.memory = true
                 }
-            }
+            })
             
             if assets.isEmpty {
                 return
@@ -96,9 +93,9 @@ class HDAssetCollection: NSObject {
             
             let imageRequestOptions = PHImageRequestOptions()
             imageRequestOptions.synchronous = true // synchronous for asset order
-            imageRequestOptions.version = PHImageRequestOptionsVersion.Current
-            imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
-            imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
+            imageRequestOptions.version = .Current
+            imageRequestOptions.deliveryMode = .HighQualityFormat
+            imageRequestOptions.resizeMode = .Exact
             
             let scale = UIScreen.mainScreen().scale
             

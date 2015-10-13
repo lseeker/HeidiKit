@@ -10,7 +10,7 @@ import UIKit
 import Photos
 
 class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChangeObserver {
-    var assets : NSMutableOrderedSet!
+    var assets: [PHAsset]!
     var imageAssets = [HDIPCSelectedAsset]()
     
     override func viewDidLoad() {
@@ -18,8 +18,8 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
         
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
         
-        assets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            let imageAsset = HDIPCSelectedAsset(obj as! PHAsset)
+        for asset in assets {
+            let imageAsset = HDIPCSelectedAsset(asset)
             self.imageAssets.append(imageAsset)
             self.downloadImageAsset(imageAsset)
         }
@@ -57,7 +57,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
         cell.dateLabel.text = asset.formattedDate
         
         if asset.needLoading {
-            cell.resolutionLabel.text = "Downloading..."
+            cell.resolutionLabel.text = "Downloading... \(asset.resolution)"
             cell.fileSizeLabel.text = nil
             cell.downloadIndicatorView.startAnimating()
         } else {
@@ -105,7 +105,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
         if editingStyle == .Delete {
             // Delete the row from the data source
             imageAssets.removeAtIndex(indexPath.row)
-            assets.removeObjectAtIndex(indexPath.row)
+            assets.removeAtIndex(indexPath.row)
             
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
@@ -113,9 +113,11 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        assets.moveObjectsAtIndexes(NSIndexSet(index: fromIndexPath.row), toIndex: toIndexPath.row)
-        let asset = imageAssets.removeAtIndex(fromIndexPath.row)
-        imageAssets.insert(asset, atIndex: toIndexPath.row)
+        let asset = assets.removeAtIndex(fromIndexPath.row)
+        assets.insert(asset, atIndex: toIndexPath.row)
+        
+        let iAsset = imageAssets.removeAtIndex(fromIndexPath.row)
+        imageAssets.insert(iAsset, atIndex: toIndexPath.row)
     }
     
     // Override to support conditional rearranging of the table view.

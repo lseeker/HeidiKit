@@ -10,12 +10,14 @@ import UIKit
 import Photos
 
 class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, PHPhotoLibraryChangeObserver {
-    @IBOutlet weak var toolbarText: UIBarButtonItem!
+    @IBOutlet weak var countTextItem: UIBarButtonItem!
+    @IBOutlet weak var selectedButtonItem: UIBarButtonItem!
     
     var assetCollection : HDAssetCollection!
     let imageManager = PHCachingImageManager()
     let requestOptions = PHImageRequestOptions()
     var size = CGSize()
+    var scaledSize = CGSize()
     var scrollToBottomOnLayout = false
     let operationQueue = NSOperationQueue()
     
@@ -31,25 +33,19 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         let screenSize = UIScreen.mainScreen().bounds.size
         let base = min(screenSize.width, screenSize.height)
+        let scale = UIScreen.mainScreen().scale
         let side = (base - 6) / 4
         size.width = side
         size.height = side
-        
-        var assets = [PHAsset]()
-        assetCollection.assetsFetchResult.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-            assets.append(obj as! PHAsset)
-        }
+        scaledSize.width = side * scale
+        scaledSize.height = side * scale
         
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
         
-        requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.HighQualityFormat
+        requestOptions.deliveryMode = .HighQualityFormat
+        requestOptions.synchronous = false
         
-        //imageManager.allowsCachingHighQualityImages = false
-        imageManager.startCachingImagesForAssets(assets, targetSize: size, contentMode: PHImageContentMode.AspectFill, options: requestOptions)
-        
-        scrollToBottomOnLayout = assetCollection.assetCollection.assetCollectionSubtype != PHAssetCollectionSubtype.AlbumRegular && assetCollection.count > 0
-        
-        collectionView?.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+        scrollToBottomOnLayout = assetCollection.assetCollection.assetCollectionSubtype != .AlbumRegular && assetCollection.count > 0
     }
     
     deinit {
@@ -59,13 +55,59 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let collectionView = collectionView
-            else { return }
+        navigationController?.addObserver(self, forKeyPath: "selectedAssets", options: .New, context: nil)
+        updateToolbar()
+        
+        guard let collectionView = collectionView else {
+            return
+        }
+        
+        var assets = [PHAsset]()
+        if assetCollection.count < 40 {
+            assetCollection.assetsFetchResult.enumerateObjectsUsingBlock({ (obj, index, stop) -> Void in
+                assets.append(obj as! PHAsset)
+            })
+        } else if scrollToBottomOnLayout {
+            // cache last 40
+            for var i = assetCollection.count - 1; i >= assetCollection.count - 40; --i {
+                assets.append(assetCollection.assetsFetchResult.objectAtIndex(i) as! PHAsset)
+            }
+        } else {
+            // cache first 40
+            for var i = 0; i < 40; ++i {
+                assets.append(assetCollection.assetsFetchResult.objectAtIndex(i) as! PHAsset)
+            }
+        }
+        
+        imageManager.startCachingImagesForAssets(assets, targetSize: scaledSize, contentMode: .AspectFill, options: requestOptions)
         
         if let selectedItemsIndexes = collectionView.indexPathsForSelectedItems() {
             collectionView.reloadItemsAtIndexPaths(selectedItemsIndexes)
         }
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        navigationController?.removeObserver(self, forKeyPath: "selectedAssets")
+        imageManager.stopCachingImagesForAllAssets()
+
+        super.viewWillDisappear(animated)
+    }
+        
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        updateToolbar()
+    }
+    
+    func updateToolbar() {
+        guard let picker = navigationController as? HDImagePickerController else {
+            countTextItem.title = ""
+            selectedButtonItem.enabled = false
+            return
+        }
+        
+        countTextItem.title = "\(picker.selectedAssets.count) / \(picker.maxImageCount)"
+        selectedButtonItem.enabled = !picker.selectedAssets.isEmpty
+    }
+    
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -132,7 +174,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
         // select status update (for album/camera roll intersection)
         if let imagePicker = navigationController as? HDImagePickerController {
-            if imagePicker.selectedAssets.containsObject(asset) {
+            if imagePicker.selectedAssets.contains(asset) {
                 if !cell.selected {
                     collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition.None)
                     cell.selected = true
@@ -145,7 +187,7 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         }
         
         // Configure the cell
-        cell.imageRequestID = imageManager.requestImageForAsset(asset, targetSize: size, contentMode: PHImageContentMode.AspectFill, options: self.requestOptions) { (image, info) -> Void in
+        cell.imageRequestID = imageManager.requestImageForAsset(asset, targetSize: scaledSize, contentMode: .AspectFill, options: self.requestOptions) { (image, info) -> Void in
             if let requestID = info![PHImageResultRequestIDKey] as? NSNumber {
                 dispatch_async(dispatch_get_main_queue()) {
                     if requestID.intValue == cell.imageRequestID {
@@ -182,7 +224,8 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         cell.imageView.alpha = 0.7
         
         let imagePicker = navigationController as! HDImagePickerController
-        imagePicker.selectedAssets.addObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)
+        imagePicker.selectedAssets.append(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)
+        updateToolbar()
     }
     
     override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
@@ -191,7 +234,8 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         cell.imageView.alpha = 1
         
         let imagePicker = navigationController as! HDImagePickerController
-        imagePicker.selectedAssets.removeObject(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)
+        imagePicker.selectedAssets.removeAtIndex(imagePicker.selectedAssets.indexOf(assetCollection.assetsFetchResult.objectAtIndex(indexPath.row) as! PHAsset)!)
+        updateToolbar()
     }
     
     override func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
@@ -264,21 +308,6 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         
     }
     
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return false
-    }
-    
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-    return false
-    }
-    
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
-    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return size
     }
@@ -290,5 +319,13 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         let count = floor(collectionView.frame.size.width / size.width)
         return (collectionView.frame.size.width - count * size.width) / (count - 1)
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let selectedListViewController = segue.destinationViewController as? HDIPCSelectedListViewController {
+            selectedListViewController.setValue(navigationController?.valueForKey("selectedAssets"), forKey: "assets")
+        }
     }
 }

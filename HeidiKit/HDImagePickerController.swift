@@ -9,84 +9,67 @@
 import UIKit
 import Photos
 
-public class HDImagePickerController: UINavigationController {
+public class HDImagePickerController: UINavigationController, PHPhotoLibraryChangeObserver {
     @IBOutlet public var imagePickerDelegate : HDImagePickerControllerDelegate?
     @IBInspectable public var maxImageCount = 5
     
-    class HDIPCSelectedAssets : NSObject, PHPhotoLibraryChangeObserver {
-        private let selectedAssets = NSMutableOrderedSet()
-        
-        var count : Int {
-            get { return selectedAssets.count }
+    var selectedAssets = [PHAsset]() {
+        willSet {
+            willChangeValueForKey("selectedAssets")
         }
-        
-        var photoAssets : NSMutableOrderedSet {
-            get { return selectedAssets }
-        }
-        
-        override init() {
-            super.init()
-            
-            PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
-        }
-        
-        deinit {
-            PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
-        }
-        
-        func addObject(asset: PHAsset) {
-            selectedAssets.addObject(asset)
-        }
-        
-        func removeObject(asset: PHAsset) {
-            selectedAssets.removeObject(asset)
-        }
-        
-        func containsObject(asset: PHAsset) -> Bool {
-            return selectedAssets.containsObject(asset)
-        }
-        
-        func array() -> [PHAsset] {
-            var array = [PHAsset]()
-            array.reserveCapacity(selectedAssets.count)
-            selectedAssets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-                array.append(obj as! PHAsset)
-            }
-            return array
-        }
-        
-        func photoLibraryDidChange(changeInstance: PHChange) {
-            dispatch_async(dispatch_get_main_queue()) {
-                self.selectedAssets.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
-                    if let details = changeInstance.changeDetailsForObject(obj as! PHAsset) {
-                        if details.assetContentChanged {
-                            let asset = details.objectAfterChanges as! PHAsset
-                            self.selectedAssets.setObject(asset, atIndex: index)
-                        }
-                    }
-                }
-            }
+        didSet {
+            didChangeValueForKey("selectedAsstes")
         }
     }
-    
-    let selectedAssets = HDIPCSelectedAssets()
     
     class public func newImagePickerController() -> HDImagePickerController {
         return UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateInitialViewController() as! HDImagePickerController
     }
     
-    init() {
+    public init() {
         super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateViewControllerWithIdentifier("HDIPCAssetCollectionViewController") )
+        
+        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    override public func awakeFromNib() {
+        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
     }
     
+    deinit {
+        PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+    }
+    
+    public func photoLibraryDidChange(changeInstance: PHChange) {
+        var selectedAssets = self.selectedAssets
+        var removedAssetIndexes = [Int]()
+        
+        for (idx, asset) in selectedAssets.enumerate() {
+            guard let details = changeInstance.changeDetailsForObject(asset) else {
+                continue
+            }
+            
+            if details.objectWasDeleted {
+                removedAssetIndexes.append(idx)
+            } else if let changed = details.objectAfterChanges as? PHAsset {
+                selectedAssets[idx] = changed
+            }
+        }
+        
+        // reverse for index based remove
+        for removedAssetIndex in removedAssetIndexes.reverse() {
+            selectedAssets.removeAtIndex(removedAssetIndex)
+        }
+        
+        // trigger observation
+        self.selectedAssets = selectedAssets
+    }
+    
+    // behave first responser for doDone and doCancel
     public override func canBecomeFirstResponder() -> Bool {
         return true
     }
@@ -97,9 +80,11 @@ public class HDImagePickerController: UINavigationController {
         becomeFirstResponder()
     }
     
+    // MARK: - Actions
+    
     @IBAction func doDone() {
         if let delegate = imagePickerDelegate {
-            delegate.imagePickerController(self, didFinishWithPhotoAssets: selectedAssets.array())
+            delegate.imagePickerController(self, didFinishWithPhotoAssets: selectedAssets)
         } else {
             dismissViewControllerAnimated(true, completion: nil)
         }
@@ -107,19 +92,12 @@ public class HDImagePickerController: UINavigationController {
     
     @IBAction func doCancel() {
         if let delegate = imagePickerDelegate {
-            if delegate.respondsToSelector(Selector("imagePickerControllerDidCancel:")) {
-                delegate.imagePickerControllerDidCancel!(self)
+            if let didCancel = delegate.imagePickerControllerDidCancel {
+                didCancel(self)
                 return
             }
         }
         
         dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let selectedListViewController = segue.destinationViewController as? HDIPCSelectedListViewController {
-            selectedListViewController.assets = selectedAssets.photoAssets
-        }
     }
 }

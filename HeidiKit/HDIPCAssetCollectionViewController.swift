@@ -10,12 +10,17 @@ import UIKit
 import Photos
 
 class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryChangeObserver {
-    var assetCollections : [HDAssetCollection] = []
+    @IBOutlet weak var countTextItem: UIBarButtonItem!
+    @IBOutlet weak var selectedButtonItem: UIBarButtonItem!
+    
+    var assetCollections = [HDAssetCollection]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadCollections()
+        if PHPhotoLibrary.authorizationStatus() == .Authorized {
+            loadCollections()
+        }
         
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
     }
@@ -27,22 +32,46 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let status = PHPhotoLibrary.authorizationStatus()
-        switch (status) {
+        navigationController?.addObserver(self, forKeyPath: "selectedAssets", options: .New, context: nil)
+        updateToolbar()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        navigationController?.removeObserver(self, forKeyPath: "selectedAssets")
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        updateToolbar()
+    }
+    
+    func updateToolbar() {
+        guard let picker = navigationController as? HDImagePickerController else {
+            countTextItem.title = ""
+            selectedButtonItem.enabled = false
+            return
+        }
+        
+        countTextItem.title = "\(picker.selectedAssets.count) / \(picker.maxImageCount)"
+        selectedButtonItem.enabled = !picker.selectedAssets.isEmpty
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        switch (PHPhotoLibrary.authorizationStatus()) {
         case .NotDetermined:
             PHPhotoLibrary.requestAuthorization { (status) -> Void in
-                if status == PHAuthorizationStatus.Authorized {
+                if status == .Authorized {
                     self.loadCollections()
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.tableView.reloadData()
-                    }
+                    self.tableView.reloadData()
                 } else {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.showUnauthrizedAlert()
-                    }
+                    self.showUnauthrizedAlert()
                 }
             }
         case .Authorized:
+            // already loaded from viewDidLoad
             break
         default:
             showUnauthrizedAlert()
@@ -53,52 +82,50 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         var assetCollections = [HDAssetCollection]()
         
         // camera roll
-        var result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.SmartAlbumUserLibrary, options: nil)
+        var result = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumUserLibrary, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // photo stream
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumMyPhotoStream, options: nil)
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumMyPhotoStream, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // favorites
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.SmartAlbumFavorites, options: nil)
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumFavorites, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // regular album
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumRegular, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // synced event
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumSyncedEvent, options: nil)
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumSyncedEvent, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // synced faces
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumSyncedFaces, options: nil)
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumSyncedFaces, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // synced album
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumSyncedAlbum, options: nil)
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumSyncedAlbum, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
         // imported
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumImported, options: nil);
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumImported, options: nil);
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
-        /* CANNOT LOAD DATA FROM CLOUD SHARED, PASSED NOW
         // cloud shared
-        result = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.Album, subtype: PHAssetCollectionSubtype.AlbumCloudShared, options: nil)
+        result = PHAssetCollection.fetchAssetCollectionsWithType(.Album, subtype: .AlbumCloudShared, options: nil)
         result.enumerateObjectsUsingBlock { (obj, index, stop) -> Void in
             assetCollections.append(HDAssetCollection(obj as! PHAssetCollection))
         }
-        */
         
         self.assetCollections = assetCollections
     }
@@ -109,23 +136,19 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
                 if let assetCollectionChangeDetails = changeInstance.changeDetailsForObject(self.assetCollections[i].assetCollection) {
                     if assetCollectionChangeDetails.objectWasDeleted {
                         self.assetCollections.removeAtIndex(i)
-                        self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                        self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)], withRowAnimation: .Fade)
                         --i
                     } else if let afterChanges = assetCollectionChangeDetails.objectAfterChanges as? PHAssetCollection {
-                        if self.assetCollections[i].assetCollection != afterChanges {
-                            self.assetCollections[i].assetCollection = afterChanges
-                            self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
-                        }
+                        self.assetCollections[i] = HDAssetCollection(afterChanges)
+                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)], withRowAnimation: .Automatic)
                     }
                 }
                 
                 if let fetchResult = self.assetCollections[i]._assetsFetchResult {
                     if let fetchResultChangeDetails = changeInstance.changeDetailsForFetchResult(fetchResult) {
-                        if self.assetCollections[i]._assetsFetchResult != fetchResultChangeDetails.fetchResultAfterChanges {
-                            self.assetCollections[i]._assetsFetchResult = fetchResultChangeDetails.fetchResultAfterChanges
-                        }
+                        self.assetCollections[i]._assetsFetchResult = fetchResultChangeDetails.fetchResultAfterChanges
                         
-                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: i, inSection: 0)], withRowAnimation: .Automatic)
                     }
                 }
             }
@@ -133,18 +156,17 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
     }
     
     func showUnauthrizedAlert() {
-        let alertController = UIAlertController(title: "Unauthorized", message: "Cannot access to photo library. Check Settings -> Privacy -> Photos", preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
+        let alertController = UIAlertController(title: NSLocalizedString("Unauthorized", comment: "Unauthorized alert title"), message: NSLocalizedString("Cannot access to photo library. Check Settings -> Privacy -> Photos", comment: "Unauthorized alert message"), preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK button"), style: .Cancel, handler: { (action) -> Void in
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
         }))
-        
         presentViewController(alertController, animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        var visibleIndexPaths = tableView.indexPathsForVisibleRows 
+        var visibleIndexPaths = tableView.indexPathsForVisibleRows
         if visibleIndexPaths == nil {
             visibleIndexPaths = [NSIndexPath]()
         }
@@ -194,12 +216,6 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         return cell
     }
     
-    // MARK: - Table view delegate
-    
-    //override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    //        return 80.0
-    //  }
-    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -208,6 +224,9 @@ class HDIPCAssetCollectionViewController: UITableViewController, PHPhotoLibraryC
         // Pass the selected object to the new view controller.
         if let assetsViewController = segue.destinationViewController as? HDIPCAssetsViewController {
             assetsViewController.assetCollection = assetCollections[tableView.indexPathForSelectedRow!.row]
+        } else if let selectedListViewController = segue.destinationViewController as? HDIPCSelectedListViewController {
+            selectedListViewController.setValue(navigationController?.valueForKey("selectedAssets"), forKey: "assets")
         }
     }
+    
 }
