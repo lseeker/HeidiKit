@@ -20,8 +20,8 @@
 		B747AE9A1BCC410C00E2A518 /* HDIPCSelectedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F339211A8A436F00FDEC8B /* HDIPCSelectedAsset.swift */; };
 		B747AE9B1BCC410C00E2A518 /* HDIPCSelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F3391C1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift */; };
 		B747AE9C1BCC410C00E2A518 /* HDIPCSelectedAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B725D3561A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift */; };
-		B747AF291BCD3DB200E2A518 /* HDImagePickerController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B747AF281BCD3DB200E2A518 /* HDImagePickerController.storyboard */; settings = {ASSET_TAGS = (); }; };
 		B7BD98791995B28800C7A0CC /* HeidiKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BD98781995B28800C7A0CC /* HeidiKitTests.swift */; };
+		B7E4E8731BCD40A000491C59 /* HDImagePickerController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E8711BCD40A000491C59 /* HDImagePickerController.storyboard */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +30,6 @@
 		B7269B561A76B3ED003312C7 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		B7269B5E1A77B1D9003312C7 /* HDIPCAssetCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCollectionViewController.swift; sourceTree = "<group>"; };
 		B747AE871BCC406A00E2A518 /* HeidiKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HeidiKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B747AF281BCD3DB200E2A518 /* HDImagePickerController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HDImagePickerController.storyboard; sourceTree = "<group>"; };
 		B74876FF1A8658030007E84C /* HDIPCAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetsViewController.swift; sourceTree = "<group>"; };
 		B74877011A8667DC0007E84C /* HDIPCAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCell.swift; sourceTree = "<group>"; };
 		B74877031A87B8340007E84C /* HDIPCAssetCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCollectionCell.swift; sourceTree = "<group>"; };
@@ -41,6 +40,8 @@
 		B7BD98771995B28800C7A0CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7BD98781995B28800C7A0CC /* HeidiKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeidiKitTests.swift; sourceTree = "<group>"; };
 		B7BFD90F1A79356A001DF4D3 /* HDImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDImagePickerController.swift; sourceTree = "<group>"; };
+		B7E4E8721BCD40A000491C59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/HDImagePickerController.storyboard; sourceTree = "<group>"; };
+		B7E4E8741BCD40AE00491C59 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/HDImagePickerController.strings; sourceTree = "<group>"; };
 		B7F3391C1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCSelectedListViewController.swift; sourceTree = "<group>"; };
 		B7F339211A8A436F00FDEC8B /* HDIPCSelectedAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCSelectedAsset.swift; sourceTree = "<group>"; };
 		B7F97D0D1A825FFE001E97D3 /* HDAssetCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDAssetCollection.swift; sourceTree = "<group>"; };
@@ -69,7 +70,7 @@
 		B7269B4F1A7697D8003312C7 /* HDImagePickerController */ = {
 			isa = PBXGroup;
 			children = (
-				B747AF281BCD3DB200E2A518 /* HDImagePickerController.storyboard */,
+				B7E4E8711BCD40A000491C59 /* HDImagePickerController.storyboard */,
 				B7F97D0D1A825FFE001E97D3 /* HDAssetCollection.swift */,
 				B7BFD90F1A79356A001DF4D3 /* HDImagePickerController.swift */,
 				B725D3541A8BC26C004F4AFC /* HDImagePickerControllerDelegate.swift */,
@@ -222,6 +223,8 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				en,
+				Base,
 			);
 			mainGroup = B7BD985F1995B28800C7A0CC;
 			productRefGroup = B7BD986A1995B28800C7A0CC /* Products */;
@@ -239,7 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B747AF291BCD3DB200E2A518 /* HDImagePickerController.storyboard in Resources */,
+				B7E4E8731BCD40A000491C59 /* HDImagePickerController.storyboard in Resources */,
 				B747AE911BCC40FD00E2A518 /* HeidiKit.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +283,18 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B7E4E8711BCD40A000491C59 /* HDImagePickerController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B7E4E8721BCD40A000491C59 /* Base */,
+				B7E4E8741BCD40AE00491C59 /* ko */,
+			);
+			name = HDImagePickerController.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B747AE8D1BCC406A00E2A518 /* Debug */ = {

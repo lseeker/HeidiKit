@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "Image filename"; ObjectID = "1u9-8n-cZ4"; */
+"1u9-8n-cZ4.text" = "Image filename";
+
+/* Class = "UIBarButtonItem"; title = "ToolbarText"; ObjectID = "9MR-aX-Hjt"; */
+"9MR-aX-Hjt.title" = "ToolbarText";
+
+/* Class = "UINavigationItem"; title = "Photos"; ObjectID = "Li0-EH-Kgs"; */
+"Li0-EH-Kgs.title" = "Photos";
+
+/* Class = "UINavigationItem"; title = "Selected Photos"; ObjectID = "MPc-mf-N1Z"; */
+"MPc-mf-N1Z.title" = "Selected Photos";
+
+/* Class = "UILabel"; text = "AssetCollectionDetail"; ObjectID = "RCQ-tx-jxy"; */
+"RCQ-tx-jxy.text" = "AssetCollectionDetail";
+
+/* Class = "UILabel"; text = "image date"; ObjectID = "SLZ-Pq-hrW"; */
+"SLZ-Pq-hrW.text" = "image date";
+
+/* Class = "UILabel"; text = "AssetCollectionTitle"; ObjectID = "UdH-WG-hiQ"; */
+"UdH-WG-hiQ.text" = "AssetCollectionTitle";
+
+/* Class = "UILabel"; text = "image resolution"; ObjectID = "Yzw-ix-jV7"; */
+"Yzw-ix-jV7.text" = "image resolution";
+
+/* Class = "UILabel"; text = "image size"; ObjectID = "a5N-6f-8gJ"; */
+"a5N-6f-8gJ.text" = "image size";
+
+/* Class = "UIBarButtonItem"; title = "ToolbarText"; ObjectID = "z89-aq-BVI"; */
+"z89-aq-BVI.title" = "ToolbarText";
