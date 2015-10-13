@@ -20,12 +20,14 @@ class HDIPCSelectedAsset : Equatable {
             return NSDateFormatter.localizedStringFromDate(asset.creationDate!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
-    var resolution : String
+    var resolution : String {
+        get {
+            return "\(asset.pixelWidth) x \(asset.pixelHeight)"
+        }
+    }
     
     init(_ asset : PHAsset) {
         self.asset = asset
-        
-        resolution = "\(asset.pixelWidth) x \(asset.pixelHeight)"
         
         loadData()
     }

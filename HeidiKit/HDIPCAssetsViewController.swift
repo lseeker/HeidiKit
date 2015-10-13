@@ -31,15 +31,6 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
         collectionView?.allowsSelection = true
         collectionView?.allowsMultipleSelection = true
         
-        let screenSize = UIScreen.mainScreen().bounds.size
-        let base = min(screenSize.width, screenSize.height)
-        let scale = UIScreen.mainScreen().scale
-        let side = (base - 6) / 4
-        size.width = side
-        size.height = side
-        scaledSize.width = side * scale
-        scaledSize.height = side * scale
-        
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
         
         requestOptions.deliveryMode = .HighQualityFormat
@@ -54,6 +45,15 @@ class HDIPCAssetsViewController: UICollectionViewController, UICollectionViewDel
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let viewSize = parentViewController!.view.frame
+        let base = min(viewSize.width, viewSize.height)
+        let scale = UIScreen.mainScreen().scale
+        let side = (base - 6) / 4
+        size.width = side
+        size.height = side
+        scaledSize.width = side * scale
+        scaledSize.height = side * scale
         
         navigationController?.addObserver(self, forKeyPath: "selectedAssets", options: .New, context: nil)
         updateToolbar()
