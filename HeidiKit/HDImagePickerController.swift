@@ -37,6 +37,8 @@ public class HDImagePickerController: UINavigationController, PHPhotoLibraryChan
     }
     
     override public func awakeFromNib() {
+        super.awakeFromNib()
+        
         PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
     }
     
