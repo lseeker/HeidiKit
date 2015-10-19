@@ -20,6 +20,9 @@
 		B747AE9A1BCC410C00E2A518 /* HDIPCSelectedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F339211A8A436F00FDEC8B /* HDIPCSelectedAsset.swift */; };
 		B747AE9B1BCC410C00E2A518 /* HDIPCSelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F3391C1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift */; };
 		B747AE9C1BCC410C00E2A518 /* HDIPCSelectedAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B725D3561A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift */; };
+		B770E0FC1BD507F3003D36C7 /* HDImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E0FB1BD507F3003D36C7 /* HDImageCache.swift */; settings = {ASSET_TAGS = (); }; };
+		B770E0FE1BD50883003D36C7 /* HDImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E0FD1BD50883003D36C7 /* HDImageCacheManager.swift */; settings = {ASSET_TAGS = (); }; };
+		B770E1041BD51B1D003D36C7 /* UIImageGifExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E1031BD51B1D003D36C7 /* UIImageGifExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		B7BD98791995B28800C7A0CC /* HeidiKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BD98781995B28800C7A0CC /* HeidiKitTests.swift */; };
 		B7E4E8731BCD40A000491C59 /* HDImagePickerController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E8711BCD40A000491C59 /* HDImagePickerController.storyboard */; settings = {ASSET_TAGS = (); }; };
 		B7E4E87C1BCD426600491C59 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E87E1BCD426600491C59 /* InfoPlist.strings */; };
@@ -37,6 +40,9 @@
 		B74877011A8667DC0007E84C /* HDIPCAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCell.swift; sourceTree = "<group>"; };
 		B74877031A87B8340007E84C /* HDIPCAssetCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDIPCAssetCollectionCell.swift; sourceTree = "<group>"; };
 		B760C9871995B8F000B97517 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B770E0FB1BD507F3003D36C7 /* HDImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDImageCache.swift; sourceTree = "<group>"; };
+		B770E0FD1BD50883003D36C7 /* HDImageCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HDImageCacheManager.swift; sourceTree = "<group>"; };
+		B770E1031BD51B1D003D36C7 /* UIImageGifExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageGifExtension.swift; sourceTree = "<group>"; };
 		B7BD986D1995B28800C7A0CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7BD986E1995B28800C7A0CC /* HeidiKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeidiKit.h; sourceTree = "<group>"; };
 		B7BD98741995B28800C7A0CC /* HeidiKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeidiKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +97,16 @@
 			name = HDImagePickerController;
 			sourceTree = "<group>";
 		};
+		B770E0FA1BD507E0003D36C7 /* HDImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				B770E1031BD51B1D003D36C7 /* UIImageGifExtension.swift */,
+				B770E0FB1BD507F3003D36C7 /* HDImageCache.swift */,
+				B770E0FD1BD50883003D36C7 /* HDImageCacheManager.swift */,
+			);
+			name = HDImageCache;
+			sourceTree = "<group>";
+		};
 		B7BD985F1995B28800C7A0CC = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +130,7 @@
 		B7BD986B1995B28800C7A0CC /* HeidiKit */ = {
 			isa = PBXGroup;
 			children = (
+				B770E0FA1BD507E0003D36C7 /* HDImageCache */,
 				B7F3391E1A88F68200FDEC8B /* HDImageViewController */,
 				B7F97D131A83A6C0001E97D3 /* HeidiKit.xcassets */,
 				B7269B4F1A7697D8003312C7 /* HDImagePickerController */,
@@ -274,14 +291,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				B747AE931BCC410C00E2A518 /* HDAssetCollection.swift in Sources */,
+				B770E0FC1BD507F3003D36C7 /* HDImageCache.swift in Sources */,
 				B747AE941BCC410C00E2A518 /* HDImagePickerController.swift in Sources */,
 				B747AE951BCC410C00E2A518 /* HDImagePickerControllerDelegate.swift in Sources */,
 				B747AE961BCC410C00E2A518 /* HDIPCAssetCell.swift in Sources */,
 				B747AE971BCC410C00E2A518 /* HDIPCAssetCollectionCell.swift in Sources */,
 				B747AE981BCC410C00E2A518 /* HDIPCAssetCollectionViewController.swift in Sources */,
+				B770E1041BD51B1D003D36C7 /* UIImageGifExtension.swift in Sources */,
 				B747AE991BCC410C00E2A518 /* HDIPCAssetsViewController.swift in Sources */,
 				B747AE9A1BCC410C00E2A518 /* HDIPCSelectedAsset.swift in Sources */,
 				B747AE9B1BCC410C00E2A518 /* HDIPCSelectedListViewController.swift in Sources */,
+				B770E0FE1BD50883003D36C7 /* HDImageCacheManager.swift in Sources */,
 				B747AE9C1BCC410C00E2A518 /* HDIPCSelectedAssetCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,10 +367,15 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.inode.HeidiKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
 		};
@@ -369,9 +394,14 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = kr.inode.HeidiKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};
