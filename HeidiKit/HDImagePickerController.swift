@@ -9,49 +9,49 @@
 import UIKit
 import Photos
 
-public class HDImagePickerController: UINavigationController, PHPhotoLibraryChangeObserver {
-    @IBOutlet public var imagePickerDelegate : HDImagePickerControllerDelegate?
-    @IBInspectable public var maxImageCount = 5
+open class HDImagePickerController: UINavigationController, PHPhotoLibraryChangeObserver {
+    @IBOutlet open var imagePickerDelegate : HDImagePickerControllerDelegate?
+    @IBInspectable open var maxImageCount = 5
     
     var selectedAssets = [PHAsset]() {
         willSet {
-            willChangeValueForKey("selectedAssets")
+            willChangeValue(forKey: "selectedAssets")
         }
         didSet {
-            didChangeValueForKey("selectedAsstes")
+            didChangeValue(forKey: "selectedAsstes")
         }
     }
     
-    class public func newImagePickerController() -> HDImagePickerController {
-        return UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateInitialViewController() as! HDImagePickerController
+    class open func newImagePickerController() -> HDImagePickerController {
+        return UIStoryboard(name: "HDImagePickerController", bundle: Bundle(for: HDImagePickerController.self)).instantiateInitialViewController() as! HDImagePickerController
     }
     
     public init() {
-        super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: NSBundle(forClass: HDImagePickerController.self)).instantiateViewControllerWithIdentifier("HDIPCAssetCollectionViewController") )
+        super.init(rootViewController: UIStoryboard(name: "HDImagePickerController", bundle: Bundle(for: HDImagePickerController.self)).instantiateViewController(withIdentifier: "HDIPCAssetCollectionViewController") )
         
-        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+        PHPhotoLibrary.shared().register(self)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override public func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         
-        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+        PHPhotoLibrary.shared().register(self)
     }
     
     deinit {
-        PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+        PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
     
-    public func photoLibraryDidChange(changeInstance: PHChange) {
+    open func photoLibraryDidChange(_ changeInstance: PHChange) {
         var selectedAssets = self.selectedAssets
         var removedAssetIndexes = [Int]()
         
-        for (idx, asset) in selectedAssets.enumerate() {
-            guard let details = changeInstance.changeDetailsForObject(asset) else {
+        for (idx, asset) in selectedAssets.enumerated() {
+            guard let details = changeInstance.changeDetails(for: asset) else {
                 continue
             }
             
@@ -63,8 +63,8 @@ public class HDImagePickerController: UINavigationController, PHPhotoLibraryChan
         }
         
         // reverse for index based remove
-        for removedAssetIndex in removedAssetIndexes.reverse() {
-            selectedAssets.removeAtIndex(removedAssetIndex)
+        for removedAssetIndex in removedAssetIndexes.reversed() {
+            selectedAssets.remove(at: removedAssetIndex)
         }
         
         // trigger observation
@@ -72,11 +72,11 @@ public class HDImagePickerController: UINavigationController, PHPhotoLibraryChan
     }
     
     // behave first responser for doDone and doCancel
-    public override func canBecomeFirstResponder() -> Bool {
+    open override var canBecomeFirstResponder : Bool {
         return true
     }
     
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         becomeFirstResponder()
@@ -88,7 +88,7 @@ public class HDImagePickerController: UINavigationController, PHPhotoLibraryChan
         if let delegate = imagePickerDelegate {
             delegate.imagePickerController(self, didFinishWithPhotoAssets: selectedAssets)
         } else {
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
     }
     
@@ -100,6 +100,6 @@ public class HDImagePickerController: UINavigationController, PHPhotoLibraryChan
             }
         }
         
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

@@ -8,31 +8,31 @@
 
 import UIKit
 
-public class HDImageCacheManager: NSObject {
+open class HDImageCacheManager: NSObject {
     static let instance = HDImageCacheManager()
 
-    public class func defaultManager() -> HDImageCacheManager {
+    open class func defaultManager() -> HDImageCacheManager {
         return instance
     }
 
-    public var sessionConfiguration: NSURLSessionConfiguration? {
+    open var sessionConfiguration: URLSessionConfiguration? {
         didSet {
             _session = nil
         }
     }
-    var _session: NSURLSession?
-    lazy var cacheDirectoryURL: NSURL = {
-        let cacheURL = try! NSFileManager.defaultManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false).URLByAppendingPathComponent("_HDImageCache")
+    var _session: URLSession?
+    lazy var cacheDirectoryURL: URL = {
+        let cacheURL = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("_HDImageCache")
         
         // make cache directory available
-        try! NSFileManager.defaultManager().createDirectoryAtURL(cacheURL, withIntermediateDirectories: true, attributes: nil)
+        try! FileManager.default.createDirectory(at: cacheURL, withIntermediateDirectories: true, attributes: nil)
         
         return cacheURL
     }()
     
-    var imageCaches = [NSURL: HDImageCache]()
+    var imageCaches = [URL: HDImageCache]()
     
-    public func imageCacheFor(URL: NSURL) -> HDImageCache {
+    open func imageCacheFor(_ URL: Foundation.URL) -> HDImageCache {
         if let imageCache = imageCaches[URL] {
             return imageCache
         }
@@ -42,19 +42,19 @@ public class HDImageCacheManager: NSObject {
         return imageCache
     }
     
-    public func purge() {
+    open func purge() {
         imageCaches.removeAll()
     }
 
-    public func session() -> NSURLSession {
+    open func session() -> URLSession {
         if let session = _session {
             return session
         }
         
         if let sessionConfiguration = sessionConfiguration {
-            _session = NSURLSession(configuration: sessionConfiguration)
+            _session = URLSession(configuration: sessionConfiguration)
         } else {
-            _session = NSURLSession()
+            _session = URLSession()
         }
         return _session!
     }

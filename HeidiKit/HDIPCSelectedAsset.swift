@@ -17,7 +17,7 @@ class HDIPCSelectedAsset : Equatable {
     var needLoading = true
     var formattedDate : String {
         get {
-            return NSDateFormatter.localizedStringFromDate(asset.creationDate!, dateStyle: NSDateFormatterStyle.MediumStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+            return DateFormatter.localizedString(from: asset.creationDate!, dateStyle: DateFormatter.Style.medium, timeStyle: DateFormatter.Style.none)
         }
     }
     var resolution : String {
@@ -32,48 +32,48 @@ class HDIPCSelectedAsset : Equatable {
         loadData()
     }
     
-    private func loadData() {
+    fileprivate func loadData() {
         let options = PHImageRequestOptions()
-        options.version = PHImageRequestOptionsVersion.Current
-        options.networkAccessAllowed = false
-        options.synchronous = true
+        options.version = PHImageRequestOptionsVersion.current
+        options.isNetworkAccessAllowed = false
+        options.isSynchronous = true
         
         // request data for file name
-        PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options) { (imageData, dataUTI, orientation, info) -> Void in
-            if let url = info!["PHImageFileURLKey"] as? NSURL {
-                self.fileName = "\(url.lastPathComponent!)"
+        PHImageManager.default().requestImageData(for: asset, options: options) { (imageData, dataUTI, orientation, info) -> Void in
+            if let url = info!["PHImageFileURLKey"] as? URL {
+                self.fileName = "\(url.lastPathComponent)"
             } else {
                 self.fileName = "NO NAME"
             }
             if let imageData = imageData {
-                self.fileSize = imageData.length
+                self.fileSize = imageData.count
             } else {
                 self.fileSize = -1
             }
         }
     }
     
-    func loadThumbnail(completionHandler : ((HDIPCSelectedAsset) -> Void)?) {
-        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: 68, height: 68), contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image, info) -> Void in
+    func loadThumbnail(_ completionHandler : ((HDIPCSelectedAsset) -> Void)?) {
+        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 68, height: 68), contentMode: PHImageContentMode.aspectFill, options: nil, resultHandler: { (image, info) -> Void in
             self.thumbnail = image
             
             if completionHandler != nil {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler!(self)
                 }
             }
         })
     }
     
-    func downloadFullsizeImage(completionHandler : ((HDIPCSelectedAsset) -> Void)?) {
+    func downloadFullsizeImage(_ completionHandler : ((HDIPCSelectedAsset) -> Void)?) {
         // attempt to load full size image data
         let options = PHImageRequestOptions()
-        options.deliveryMode = PHImageRequestOptionsDeliveryMode.Opportunistic
-        options.version = PHImageRequestOptionsVersion.Current
-        options.resizeMode = PHImageRequestOptionsResizeMode.None
+        options.deliveryMode = PHImageRequestOptionsDeliveryMode.opportunistic
+        options.version = PHImageRequestOptionsVersion.current
+        options.resizeMode = PHImageRequestOptionsResizeMode.none
         
-        options.networkAccessAllowed = true
-        options.synchronous = false
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = false
         
         options.progressHandler = { (p1, p2, p3, p4) -> Void in
             print(p1)
@@ -82,12 +82,12 @@ class HDIPCSelectedAsset : Equatable {
             print(p4)
         }
         
-        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: CGFloat.max, height: CGFloat.max), contentMode: PHImageContentMode.AspectFit, options: options) { (image, info) -> Void in
+        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), contentMode: PHImageContentMode.aspectFit, options: options) { (image, info) -> Void in
             if (!Bool(info![PHImageResultIsDegradedKey] as! NSNumber)) {
                 self.needLoading = false
                 
                 if completionHandler != nil {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler!(self)
                     }
                 }

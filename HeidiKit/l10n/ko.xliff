@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="HeidiKit/Base.lproj/HDImagePickerController.storyboard" source-language="en" datatype="plaintext" target-language="ko">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.0.1" build-num="7A1001"/>
+    </header>
+    <body>
+      <trans-unit id="1u9-8n-cZ4.text">
+        <source>Image filename</source>
+        <target>Image filename</target>
+        <note>Class = "UILabel"; text = "Image filename"; ObjectID = "1u9-8n-cZ4";</note>
+      </trans-unit>
+      <trans-unit id="9MR-aX-Hjt.title">
+        <source>ToolbarText</source>
+        <target>ToolbarText</target>
+        <note>Class = "UIBarButtonItem"; title = "ToolbarText"; ObjectID = "9MR-aX-Hjt";</note>
+      </trans-unit>
+      <trans-unit id="Li0-EH-Kgs.title">
+        <source>Photos</source>
+        <target>사진</target>
+        <note>Class = "UINavigationItem"; title = "Photos"; ObjectID = "Li0-EH-Kgs";</note>
+      </trans-unit>
+      <trans-unit id="MPc-mf-N1Z.title">
+        <source>Selected Photos</source>
+        <target>선택한 사진</target>
+        <note>Class = "UINavigationItem"; title = "Selected Photos"; ObjectID = "MPc-mf-N1Z";</note>
+      </trans-unit>
+      <trans-unit id="RCQ-tx-jxy.text">
+        <source>AssetCollectionDetail</source>
+        <target>AssetCollectionDetail</target>
+        <note>Class = "UILabel"; text = "AssetCollectionDetail"; ObjectID = "RCQ-tx-jxy";</note>
+      </trans-unit>
+      <trans-unit id="SLZ-Pq-hrW.text">
+        <source>image date</source>
+        <target>image date</target>
+        <note>Class = "UILabel"; text = "image date"; ObjectID = "SLZ-Pq-hrW";</note>
+      </trans-unit>
+      <trans-unit id="UdH-WG-hiQ.text">
+        <source>AssetCollectionTitle</source>
+        <target>AssetCollectionTitle</target>
+        <note>Class = "UILabel"; text = "AssetCollectionTitle"; ObjectID = "UdH-WG-hiQ";</note>
+      </trans-unit>
+      <trans-unit id="Yzw-ix-jV7.text">
+        <source>image resolution</source>
+        <target>image resolution</target>
+        <note>Class = "UILabel"; text = "image resolution"; ObjectID = "Yzw-ix-jV7";</note>
+      </trans-unit>
+      <trans-unit id="a5N-6f-8gJ.text">
+        <source>image size</source>
+        <target>image size</target>
+        <note>Class = "UILabel"; text = "image size"; ObjectID = "a5N-6f-8gJ";</note>
+      </trans-unit>
+      <trans-unit id="z89-aq-BVI.title">
+        <source>ToolbarText</source>
+        <target>ToolbarText</target>
+        <note>Class = "UIBarButtonItem"; title = "ToolbarText"; ObjectID = "z89-aq-BVI";</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="HeidiKit/Info.plist" source-language="en" datatype="plaintext" target-language="ko">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.0.1" build-num="7A1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>2.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="HeidiKit/Localizable.strings" source-language="en" datatype="plaintext" target-language="ko">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.0.1" build-num="7A1001"/>
+    </header>
+    <body>
+      <trans-unit id="Cannot access to photo library. Check Settings -&gt; Privacy -&gt; Photos">
+        <source>Cannot access to photo library. Check Settings -&gt; Privacy -&gt; Photos</source>
+        <target>사진 라이브러리에 접근할 수 없습니다. 설정 앱에서 개인 정보 보호 -&gt; 사진 을 확인해보세요.</target>
+        <note>Unauthorized alert message</note>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>확인</source>
+        <note>OK button</note>
+      </trans-unit>
+      <trans-unit id="Unauthorized">
+        <source>권한 없음</source>
+        <note>Unauthorized alert title</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="HeidiKitTests/Info.plist" source-language="en" datatype="plaintext" target-language="ko">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.0.1" build-num="7A1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

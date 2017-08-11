@@ -20,11 +20,11 @@
 		B747AE9A1BCC410C00E2A518 /* HDIPCSelectedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F339211A8A436F00FDEC8B /* HDIPCSelectedAsset.swift */; };
 		B747AE9B1BCC410C00E2A518 /* HDIPCSelectedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F3391C1A88F0EA00FDEC8B /* HDIPCSelectedListViewController.swift */; };
 		B747AE9C1BCC410C00E2A518 /* HDIPCSelectedAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B725D3561A8BD18E004F4AFC /* HDIPCSelectedAssetCell.swift */; };
-		B770E0FC1BD507F3003D36C7 /* HDImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E0FB1BD507F3003D36C7 /* HDImageCache.swift */; settings = {ASSET_TAGS = (); }; };
-		B770E0FE1BD50883003D36C7 /* HDImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E0FD1BD50883003D36C7 /* HDImageCacheManager.swift */; settings = {ASSET_TAGS = (); }; };
-		B770E1041BD51B1D003D36C7 /* UIImageGifExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E1031BD51B1D003D36C7 /* UIImageGifExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		B770E0FC1BD507F3003D36C7 /* HDImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E0FB1BD507F3003D36C7 /* HDImageCache.swift */; };
+		B770E0FE1BD50883003D36C7 /* HDImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E0FD1BD50883003D36C7 /* HDImageCacheManager.swift */; };
+		B770E1041BD51B1D003D36C7 /* UIImageGifExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770E1031BD51B1D003D36C7 /* UIImageGifExtension.swift */; };
 		B7BD98791995B28800C7A0CC /* HeidiKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BD98781995B28800C7A0CC /* HeidiKitTests.swift */; };
-		B7E4E8731BCD40A000491C59 /* HDImagePickerController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E8711BCD40A000491C59 /* HDImagePickerController.storyboard */; settings = {ASSET_TAGS = (); }; };
+		B7E4E8731BCD40A000491C59 /* HDImagePickerController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E8711BCD40A000491C59 /* HDImagePickerController.storyboard */; };
 		B7E4E87C1BCD426600491C59 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E87E1BCD426600491C59 /* InfoPlist.strings */; };
 		B7E4E8811BCD426600491C59 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E8831BCD426600491C59 /* Localizable.strings */; };
 		B7E4E8861BCD426700491C59 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B7E4E8881BCD426700491C59 /* InfoPlist.strings */; };
@@ -230,14 +230,15 @@
 		B7BD98601995B28800C7A0CC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftMigration = 0700;
+				LastSwiftMigration = 0730;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = inode.kr;
 				TargetAttributes = {
 					B747AE861BCC406A00E2A518 = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = XH6K76366S;
+						LastSwiftMigration = 0810;
 					};
 					B7BD98731995B28800C7A0CC = {
 						CreatedOnToolsVersion = 6.0;
@@ -376,6 +377,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -402,6 +404,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -445,7 +448,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";

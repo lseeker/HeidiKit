@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7BD98731995B28800C7A0CC"
-               BuildableName = "HeidiKitTests.xctest"
-               BlueprintName = "HeidiKitTests"
+               BlueprintIdentifier = "B747AE861BCC406A00E2A518"
+               BuildableName = "HeidiKit.framework"
+               BlueprintName = "HeidiKit"
                ReferencedContainer = "container:HeidiKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,26 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B7BD98731995B28800C7A0CC"
-               BuildableName = "HeidiKitTests.xctest"
-               BlueprintName = "HeidiKitTests"
-               ReferencedContainer = "container:HeidiKit.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B7BD98731995B28800C7A0CC"
-            BuildableName = "HeidiKitTests.xctest"
-            BlueprintName = "HeidiKitTests"
-            ReferencedContainer = "container:HeidiKit.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -64,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B7BD98731995B28800C7A0CC"
-            BuildableName = "HeidiKitTests.xctest"
-            BlueprintName = "HeidiKitTests"
+            BlueprintIdentifier = "B747AE861BCC406A00E2A518"
+            BuildableName = "HeidiKit.framework"
+            BlueprintName = "HeidiKit"
             ReferencedContainer = "container:HeidiKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B7BD98731995B28800C7A0CC"
-            BuildableName = "HeidiKitTests.xctest"
-            BlueprintName = "HeidiKitTests"
+            BlueprintIdentifier = "B747AE861BCC406A00E2A518"
+            BuildableName = "HeidiKit.framework"
+            BlueprintName = "HeidiKit"
             ReferencedContainer = "container:HeidiKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

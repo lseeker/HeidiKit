@@ -10,7 +10,7 @@ import Foundation
 import Photos
 
 @objc public protocol HDImagePickerControllerDelegate : UINavigationControllerDelegate {
-    func imagePickerController(picker: HDImagePickerController, didFinishWithPhotoAssets: [PHAsset])
+    func imagePickerController(_ picker: HDImagePickerController, didFinishWithPhotoAssets: [PHAsset])
     
-    optional func imagePickerControllerDidCancel(picker: HDImagePickerController)
+    @objc optional func imagePickerControllerDidCancel(_ picker: HDImagePickerController)
 }

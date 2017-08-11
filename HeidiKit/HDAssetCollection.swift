@@ -17,23 +17,23 @@ class HDAssetCollection: NSObject {
         }
     }
     var keyImage : UIImage?
-    var _assetsFetchResult : PHFetchResult? {
+    var _assetsFetchResult : PHFetchResult<AnyObject>? {
         didSet {
             keyImage = nil
         }
     }
-    var assetsFetchResult : PHFetchResult {
+    var assetsFetchResult : PHFetchResult<AnyObject> {
         get {
             if _assetsFetchResult != nil {
                 return _assetsFetchResult!
             }
             
             let fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.Image.rawValue)
+            fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
             fetchOptions.wantsIncrementalChangeDetails = true
             
             //fetchOptions.sortDescriptors = [ NSSortDescriptor(key: "creationDate", ascending: true) ]
-            _assetsFetchResult = PHAsset.fetchAssetsInAssetCollection(self.assetCollection, options: fetchOptions)
+            _assetsFetchResult = PHAsset.fetchAssets(in: self.assetCollection, options: fetchOptions)
             
             return _assetsFetchResult!
         }
@@ -59,17 +59,17 @@ class HDAssetCollection: NSObject {
         _assetsFetchResult = nil;
     }
     
-    func fetchKeyImage(resultHandler : ((keyImage : UIImage!) -> Void)) {
+    func fetchKeyImage(_ resultHandler : @escaping ((_ keyImage : UIImage?) -> Void)) {
         if let keyImage = keyImage {
-            resultHandler(keyImage: keyImage)
+            resultHandler(keyImage)
             return
         }
         
-        NSOperationQueue().addOperationWithBlock { () -> Void in
+        OperationQueue().addOperation { () -> Void in
             let fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.Image.rawValue)
+            fetchOptions.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
             
-            var resultOptional = PHAsset.fetchKeyAssetsInAssetCollection(self.assetCollection, options: fetchOptions)
+            var resultOptional = PHAsset.fetchKeyAssets(in: self.assetCollection, options: fetchOptions)
             if resultOptional?.count == 0 {
                 resultOptional = self.assetsFetchResult
             }
@@ -80,10 +80,10 @@ class HDAssetCollection: NSObject {
             //let options = self.assetCollection.assetCollectionSubtype == .SmartAlbumUserLibrary ? .Reverse : NSEnumerationOptions()
             
             var assets = [PHAsset]()
-            result.enumerateObjectsUsingBlock({ (obj, index, stop) -> Void in
-                assets.append(obj as! PHAsset)
+            result.enumerateObjects({ (obj, index, stop) -> Void in
+                assets.append(obj )
                 if assets.count == 3 {
-                    stop.memory = true
+                    stop.pointee = true
                 }
             })
             
@@ -92,33 +92,33 @@ class HDAssetCollection: NSObject {
             }
             
             let imageRequestOptions = PHImageRequestOptions()
-            imageRequestOptions.synchronous = true // synchronous for asset order
-            imageRequestOptions.version = .Current
-            imageRequestOptions.deliveryMode = .HighQualityFormat
-            imageRequestOptions.resizeMode = .Exact
+            imageRequestOptions.isSynchronous = true // synchronous for asset order
+            imageRequestOptions.version = .current
+            imageRequestOptions.deliveryMode = .highQualityFormat
+            imageRequestOptions.resizeMode = .exact
             
-            let scale = UIScreen.mainScreen().scale
+            let scale = UIScreen.main.scale
             
             let width = 68 * scale
             let height = 72 * scale
             
             var color = UITableViewCell.appearance().backgroundColor
             if color == nil {
-                color = UIColor.whiteColor()
+                color = UIColor.white
             }
             // scale is 1.0 for line stroke
             UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), true, 1.0)
             let context = UIGraphicsGetCurrentContext()
             
-            CGContextSetFillColorWithColor(context, color?.CGColor)
-            CGContextFillRect(context, CGRect(x: 0, y: 0, width: width, height: height))
+            context?.setFillColor((color?.cgColor)!)
+            context?.fill(CGRect(x: 0, y: 0, width: width, height: height))
             
             let count = assets.count
-            for (index, asset) in Array(assets.reverse()).enumerate() {
+            for (index, asset) in Array(assets.reversed()).enumerated() {
                 let factor = CGFloat((count - 1 - index) * 2) * scale
                 let sideLength = 68 * scale - factor * 2
                 let size = CGSize(width: sideLength, height: sideLength)
-                PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: size, contentMode: PHImageContentMode.AspectFill, options: imageRequestOptions, resultHandler: { (image, info) -> Void in
+                PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: PHImageContentMode.aspectFill, options: imageRequestOptions, resultHandler: { (image, info) -> Void in
                     guard let image = image else {
                         return
                     }
@@ -127,20 +127,20 @@ class HDAssetCollection: NSObject {
                     let cropSize = min(image.size.width, image.size.height)
                     let cropOrigin = CGPoint(x: (image.size.width - cropSize) / 2, y: (image.size.height - cropSize) / 2)
                     
-                    CGContextDrawImage(context, rect, CGImageCreateWithImageInRect(image.CGImage, CGRect(origin: cropOrigin, size: CGSize(width: cropSize, height: cropSize))))
+                    context?.draw((image.cgImage?.cropping(to: CGRect(origin: cropOrigin, size: CGSize(width: cropSize, height: cropSize)))!)!, in: rect)
                 })
             }
-            CGContextSetStrokeColorWithColor(context, color?.CGColor)
-            CGContextAddRect(context, CGRect(x: 0, y: height - 4 * scale + 0.5, width: width, height: 2 * scale))
-            CGContextStrokePath(context)
+            context?.setStrokeColor((color?.cgColor)!)
+            context?.addRect(CGRect(x: 0, y: height - 4 * scale + 0.5, width: width, height: 2 * scale))
+            context?.strokePath()
             
-            if let cgImage = CGBitmapContextCreateImage(context) {
+            if let cgImage = context?.makeImage() {
                 UIGraphicsEndImageContext()
                 
-                self.keyImage = UIImage(CGImage: cgImage, scale: scale, orientation: UIImageOrientation.DownMirrored)
+                self.keyImage = UIImage(cgImage: cgImage, scale: scale, orientation: UIImageOrientation.downMirrored)
             }
-            dispatch_async(dispatch_get_main_queue()) {
-                resultHandler(keyImage: self.keyImage)
+            DispatchQueue.main.async {
+                resultHandler(self.keyImage)
             }
         }
         

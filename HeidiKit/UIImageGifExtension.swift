@@ -8,23 +8,47 @@
 
 import UIKit
 import ImageIO
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 extension UIImage {
-    class func animatedImageWithAnimatedGIFData(data: NSData) -> UIImage? {
-        guard let source = CGImageSourceCreateWithData(data, nil) else {
+    class func animatedImageWithAnimatedGIFData(_ data: Data) -> UIImage? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
             return nil
         }
         
         let imageCount = CGImageSourceGetCount(source)
         if imageCount == 1 {
             // not animated gif
-            return UIImage(CGImage: CGImageSourceCreateImageAtIndex(source, 0, nil)!)
+            return UIImage(cgImage: CGImageSourceCreateImageAtIndex(source, 0, nil)!)
         }
         
-        var images = [CGImageRef]()
+        var images = [CGImage]()
         var delays = [Int]()
         
-        for var i = 0; i < imageCount; ++i {
+        for i in  0 ..< imageCount {
             images.append(CGImageSourceCreateImageAtIndex(source, i, nil)!)
             delays.append(delayForImageAtIndex(source, index: i))
         }
@@ -35,10 +59,10 @@ extension UIImage {
         }
         
         let frames = frameArray(imageCount, images: images, delays: delays)
-        return UIImage.animatedImageWithImages(frames, duration: Double(totalDuration) / 100.0)
+        return UIImage.animatedImage(with: frames, duration: Double(totalDuration) / 100.0)
     }
     
-    class func delayForImageAtIndex(source: CGImageSourceRef, index: Int) -> Int {
+    class func delayForImageAtIndex(_ source: CGImageSource, index: Int) -> Int {
         var delay = 1;
         guard let properties = CGImageSourceCopyPropertiesAtIndex(source, index, nil) as NSDictionary? else {
             return delay
@@ -59,13 +83,13 @@ extension UIImage {
         return delay
     }
     
-    class func frameArray(count: Int, images: [CGImageRef], delays: [Int]) -> [UIImage] {
+    class func frameArray(_ count: Int, images: [CGImage], delays: [Int]) -> [UIImage] {
         let gcd = vectorGCD(delays)
         var frames = [UIImage]()
         
-        for var i = 0; i < count; ++i {
-            let frame = UIImage(CGImage: images[i])
-            for var j = delays[i] / gcd; j > 0; --j {
+        for i in 0 ..< count {
+            let frame = UIImage(cgImage: images[i])
+            for j in ((0 + 1)...delays[i] / gcd).reversed() {
                 frames.append(frame)
             }
         }
@@ -73,18 +97,20 @@ extension UIImage {
         return frames
     }
 
-    class func vectorGCD(values: [Int]) -> Int {
+    class func vectorGCD(_ values: [Int]) -> Int {
         var gcd = values[0]
-        for value in values.suffixFrom(1) {
+        for value in values.suffix(from: 1) {
             gcd = pairGCD(value, gcd)
         }
         return gcd
     }
     
-    class func pairGCD(var a: Int, var _ b: Int) -> Int {
-        if a < b {
-            return pairGCD(b, a)
+    class func pairGCD(_ ap: Int, _ bp: Int) -> Int {
+        if ap < bp {
+            return pairGCD(bp, ap)
         }
+        var a = ap;
+        var b = bp;
         for ;; {
             let r = a % b
             if r == 0 {

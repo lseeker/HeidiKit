@@ -16,7 +16,7 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+        PHPhotoLibrary.shared().register(self)
         
         for asset in assets {
             let imageAsset = HDIPCSelectedAsset(asset)
@@ -24,27 +24,27 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
             self.downloadImageAsset(imageAsset)
         }
         
-        editing = true
+        isEditing = true
     }
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return assets.count
     }
     
     @IBAction func dismiss() {
-        PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+        PHPhotoLibrary.shared().unregisterChangeObserver(self)
         
-        dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SelectedAssetCell", forIndexPath: indexPath) as! HDIPCSelectedAssetCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SelectedAssetCell", for: indexPath) as! HDIPCSelectedAssetCell
         
         // Configure the cell...
         let asset = imageAssets[indexPath.row]
@@ -75,8 +75,8 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
         } else {
             cell.thumnailImageView.image = nil
             asset.loadThumbnail({ (asset) -> Void in
-                if let index = self.imageAssets.indexOf(asset) {
-                    if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCSelectedAssetCell {
+                if let index = self.imageAssets.index(of: asset) {
+                    if let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? HDIPCSelectedAssetCell {
                         cell.thumnailImageView.image = asset.thumbnail
                     }
                 }
@@ -96,32 +96,32 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     
     */
     
-    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Deselect"
     }
     
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             // Delete the row from the data source
-            imageAssets.removeAtIndex(indexPath.row)
-            assets.removeAtIndex(indexPath.row)
+            imageAssets.remove(at: indexPath.row)
+            assets.remove(at: indexPath.row)
             
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
     // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        let asset = assets.removeAtIndex(fromIndexPath.row)
-        assets.insert(asset, atIndex: toIndexPath.row)
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
+        let asset = assets.remove(at: fromIndexPath.row)
+        assets.insert(asset, at: toIndexPath.row)
         
-        let iAsset = imageAssets.removeAtIndex(fromIndexPath.row)
-        imageAssets.insert(iAsset, atIndex: toIndexPath.row)
+        let iAsset = imageAssets.remove(at: fromIndexPath.row)
+        imageAssets.insert(iAsset, at: toIndexPath.row)
     }
     
     // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
@@ -135,26 +135,26 @@ class HDIPCSelectedListViewController: UITableViewController, PHPhotoLibraryChan
     }
     */
     
-    func photoLibraryDidChange(changeInstance: PHChange) {
-        dispatch_async(dispatch_get_main_queue()) {
-            for (index, imageAsset) in self.imageAssets.enumerate() {
-                if let details = changeInstance.changeDetailsForObject(imageAsset.asset) {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        DispatchQueue.main.async {
+            for (index, imageAsset) in self.imageAssets.enumerated() {
+                if let details = changeInstance.changeDetails(for: imageAsset.asset) {
                     if details.assetContentChanged {
                         let afterAsset = HDIPCSelectedAsset(details.objectAfterChanges as! PHAsset)
                         self.imageAssets[index] = afterAsset
                         self.downloadImageAsset(afterAsset)
                         
-                        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
                     }
                 }
             }
         }
     }
     
-    private func downloadImageAsset(imageAsset : HDIPCSelectedAsset) {
+    fileprivate func downloadImageAsset(_ imageAsset : HDIPCSelectedAsset) {
         imageAsset.downloadFullsizeImage({ (asset) -> Void in
-            if let index = self.imageAssets.indexOf(asset) {
-                if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? HDIPCSelectedAssetCell {
+            if let index = self.imageAssets.index(of: asset) {
+                if let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? HDIPCSelectedAssetCell {
                     cell.resolutionLabel.text = asset.resolution
                     if let fileSize = asset.fileSize {
                         cell.fileSizeLabel.text = String(format: "%0.2fMB", Double(fileSize) / 1024.0 / 1024.0)
